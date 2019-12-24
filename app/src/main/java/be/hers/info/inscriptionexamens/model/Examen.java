@@ -6,11 +6,11 @@ public class Examen
 {
     String cours = "PLACE_HOLDER";
 
-    int annee;
-    int quadrimestre;
+    int annee = 0;
+    int quadrimestre = 0;
 
-    TypeExam typeExam;
-    String description;
+    TypeExam typeExam = TypeExam.ecrit;
+    String description = "place_holder";
 
     Date date;
     int heure;
