@@ -6,24 +6,22 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import be.hers.info.inscriptionexamens.custom.ListeExamen;
+import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.model.Examen;
 
 public class MainPage_etud extends AppCompatActivity
 {
-    ListView listView;
-    ArrayList<Examen> examens;
+    private AdapterListView_Examen customList;
 
+    /**
+     * Initialise la listView d'examens
+     */
     private void initList()
     {
-        this.examens = new ArrayList<>();
-
-        // TODO : load from DB
-        examens.add(new Examen());
-        examens.add(new Examen());
-        examens.add(new Examen());
+        // TODO from DB
+        customList.add(new Examen());
+        customList.add(new Examen());
     }
 
     @Override
@@ -32,10 +30,12 @@ public class MainPage_etud extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-
-        // Adapter la liste au modele custom
-        ListeExamen customList = new ListeExamen(this, examens);
-        this.listView = findViewById(R.id.customListExams);
+        // Adapter la liste au model custom
+        this.customList = new AdapterListView_Examen(this, new ArrayList<Examen>());
+        ListView listView = findViewById(R.id.customListExams);
         listView.setAdapter(customList);
+
+        // init liste
+        initList();
     }
 }

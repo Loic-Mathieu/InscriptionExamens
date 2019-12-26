@@ -3,4 +3,5 @@
     <string name="bConnect">Se connecter</string>
     <string name="iMatricule">Matricule</string>
     <string name="bInscription">S\'inscrire</string>
+    <string name="mainTitle">SAMPLE TEXT</string>
 </resources>
