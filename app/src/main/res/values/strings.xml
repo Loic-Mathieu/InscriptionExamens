@@ -2,4 +2,5 @@
     <string name="app_name">inscriptionExamens</string>
     <string name="bConnect">Se connecter</string>
     <string name="iMatricule">Matricule</string>
+    <string name="bInscription">S\'inscrire</string>
 </resources>

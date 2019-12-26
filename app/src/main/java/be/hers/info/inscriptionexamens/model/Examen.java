@@ -15,4 +15,44 @@ public class Examen
     Date date;
     int heure;
     int minute;
+
+    public String getCours()
+    {
+        return cours;
+    }
+
+    public int getAnnee()
+    {
+        return annee;
+    }
+
+    public int getQuadrimestre()
+    {
+        return quadrimestre;
+    }
+
+    public TypeExam getTypeExam()
+    {
+        return typeExam;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public int getHeure()
+    {
+        return heure;
+    }
+
+    public int getMinute()
+    {
+        return minute;
+    }
 }
