@@ -4,21 +4,33 @@ import java.util.Date;
 
 public class Examen
 {
-    String cours = "PLACE_HOLDER";
+    int id;
+    int refCours;
 
     int annee = 0;
     int quadrimestre = 0;
 
-    TypeExam typeExam = TypeExam.ecrit;
-    String description = "place_holder";
+    String typeExam;
+    String description;
 
     Date date;
     int heure;
-    int minute;
+    int dureeMinute;
 
-    public String getCours()
+    public Examen(int refCours, int annee, String typeExam, String description, Date date, int dureeMinute, int heure) {
+        this.refCours = refCours;
+        this.annee = annee;
+        this.typeExam = typeExam;
+        this.description = description;
+        this.date = date;
+        this.heure = heure;
+        this.dureeMinute = dureeMinute;
+    }
+
+
+    public int getCours()
     {
-        return cours;
+        return this.refCours;
     }
 
     public int getAnnee()
@@ -31,7 +43,7 @@ public class Examen
         return quadrimestre;
     }
 
-    public TypeExam getTypeExam()
+    public String getTypeExam()
     {
         return typeExam;
     }
@@ -51,8 +63,8 @@ public class Examen
         return heure;
     }
 
-    public int getMinute()
+    public int getDureeMinute()
     {
-        return minute;
+        return dureeMinute;
     }
 }
