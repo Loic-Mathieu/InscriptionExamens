@@ -21,9 +21,9 @@ public class MainPage_etud extends AppCompatActivity
         this.examens = new ArrayList<>();
 
         // TODO : load from DB
+        /*examens.add(new Examen());
         examens.add(new Examen());
-        examens.add(new Examen());
-        examens.add(new Examen());
+        examens.add(new Examen());*/
     }
 
     @Override

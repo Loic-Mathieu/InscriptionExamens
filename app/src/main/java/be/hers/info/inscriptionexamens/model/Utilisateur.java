@@ -12,7 +12,7 @@ public class Utilisateur {
         //cstr vide
     }
 
-    public Utilisateur(String prenom, String nom, String matricule, String mdp, boolean estProf) {
+    public Utilisateur(String matricule, String mdp, String prenom, String nom, boolean estProf) {
         this.prenom = prenom;
         this.nom = nom;
         this.matricule = matricule;
@@ -45,7 +45,7 @@ public class Utilisateur {
     }
 
     public String getMatricule() {
-        return matricule;
+        return this.matricule;
     }
 
     public void setMatricule(String matricule) {

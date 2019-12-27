@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.model.Utilisateur;
+
 public class MainActivity extends AppCompatActivity
 {
     private boolean isUser(String matricule, String password)
@@ -28,6 +31,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //On crée la DB
+        final ExamDB db = new ExamDB(this);
+        Utilisateur cedric = new Utilisateur("H111111","111111","Cédric","Peeters",true);
+        db.addUtilisateur(cedric);
+        System.out.println("Matricule : "+cedric.getMatricule() + "/ Nom : " + cedric.getNom());
 
         // Boutton connexion
         Button button = findViewById(R.id.bConnect);
@@ -43,7 +51,8 @@ public class MainActivity extends AppCompatActivity
                 {
                     if(isUser(matricule.getText().toString(), password.getText().toString()))
                     {
-                        if(isTeacher(matricule.getText().toString()))
+                        System.out.println("Comparaison MDP : "+db.comparerMDP(matricule.getText().toString(), password.getText().toString()));
+                        /*if(isTeacher(matricule.getText().toString()))
                         {
                             Intent intent = new Intent(getApplicationContext(), MainPage_etud.class);
                             // intent.putExtra("name", val);
@@ -54,7 +63,7 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent(getApplicationContext(), MainPage_etud.class);
                             // intent.putExtra("name", val);
                             startActivity(intent);
-                        }
+                        }*/
                     }
                 }
             }

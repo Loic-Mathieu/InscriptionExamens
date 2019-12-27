@@ -3,6 +3,7 @@ package be.hers.info.inscriptionexamens.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -43,8 +44,8 @@ public class ExamDB extends SQLiteOpenHelper {
             +UTILISATEUR_NOM + " text not null, "
             +UTILISATEUR_ESTPROF +" boolean not null);";
 
-    //Table Utilisateur----------------------------------------------------------------------------
-    private static final String TABLE_EXAMEN = "utilisateur";
+    //Table Examen----------------------------------------------------------------------------
+    private static final String TABLE_EXAMEN = "examen";
     private static final String EXAMEN_ID = "_id";
     //"_id" obligatoire pour les PK sinon certaines fonctions d'android risquent de ne pas aller
     private static final String EXAMEN_COURS = "cours";
@@ -69,16 +70,12 @@ public class ExamDB extends SQLiteOpenHelper {
     //Création de la DB---------------------------------------------------------------------------
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_UTILISATEUR);
-        db.execSQL(CREATE_TABLE_EXAMEN);
-        Utilisateur cedric = new Utilisateur("Cédric","Peeters","H111111","111111",true);
-        addUtilisateur(cedric);
-        Utilisateur bob = new Utilisateur("Bob","Lennon","E111111","111111",true);
-        addUtilisateur(bob);
-        Utilisateur joram = new Utilisateur("Joram","Mushymiyimana","H222222","222222",true);
-        addUtilisateur(cedric);
-        Utilisateur luke = new Utilisateur("Luke","Skywalker","E222222","222222",true);
-        addUtilisateur(luke);
+        try{
+            db.execSQL(CREATE_TABLE_UTILISATEUR);
+            db.execSQL(CREATE_TABLE_EXAMEN);
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     //Upgrade de la DB----------------------------------------------------------------------------
@@ -87,14 +84,13 @@ public class ExamDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_UTILISATEUR+";");
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_EXAMEN+";");
         onCreate(db);
-
     }
 
     //********************************************************************************************
     //**************************** METHODES UTILISATEUR ******************************************
     //********************************************************************************************
     //Ajouter un utilisateur-----------------------------------------------------------------------
-    void addUtilisateur(Utilisateur utilisateur) {
+    public void addUtilisateur(Utilisateur utilisateur) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
@@ -115,7 +111,7 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Récupérer un utilisateur--------------------------------------------------------------------
-    Utilisateur getUtilisateur(String matricule) {
+    public Utilisateur getUtilisateur(String matricule) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         try{
@@ -136,17 +132,17 @@ public class ExamDB extends SQLiteOpenHelper {
                     null,
                     null
             );
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.moveToFirst();
+            }
 
             Utilisateur utilisateur = new Utilisateur(
-                    cursor.getString(0),
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
-                    cursor.getInt(4) != 0
+                    cursor.getString(4),
+                    cursor.getInt(5) != 0
             );
-
             return utilisateur;
 
         }catch(Exception e){
@@ -158,8 +154,12 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Comparer MDP -------------------------------------------------------------------------------
-    Boolean comparerMDP(String matricule, String mdp){
+    public Boolean comparerMDP(String matricule, String mdp){
+
+        System.out.println("USER : " + matricule + "/" + mdp);
         Utilisateur x = getUtilisateur(matricule);
+
+        System.out.println("X : " + x.getMatricule() + "/" + x.getMdp());
         if (mdp.equals(x.getMdp())) {
             return true;
         }
@@ -179,7 +179,7 @@ public class ExamDB extends SQLiteOpenHelper {
     //**************************** METHODES EXAMEN ******************************************
     //********************************************************************************************
     //Ajouter un utilisateur-----------------------------------------------------------------------
-    void addExamen(Examen exam) {
+    public void addExamen(Examen exam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
@@ -204,7 +204,7 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Récupérer un examen--------------------------------------------------------------------
-    Examen getExamen(String cours) {
+    public Examen getExamen(String cours) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         try {
