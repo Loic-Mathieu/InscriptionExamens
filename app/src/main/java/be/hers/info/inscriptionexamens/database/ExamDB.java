@@ -97,51 +97,64 @@ public class ExamDB extends SQLiteOpenHelper {
     void addUtilisateur(Utilisateur utilisateur) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(UTILISATEUR_MATRICULE, utilisateur.getMatricule());
-        values.put(UTILISATEUR_MDP, utilisateur.getMdp());
-        values.put(UTILISATEUR_PRENOM, utilisateur.getPrenom());
-        values.put(UTILISATEUR_NOM, utilisateur.getNom());
-        values.put(UTILISATEUR_ESTPROF, utilisateur.getEstProf());
+        try{
+            ContentValues values = new ContentValues();
+            values.put(UTILISATEUR_MATRICULE, utilisateur.getMatricule());
+            values.put(UTILISATEUR_MDP, utilisateur.getMdp());
+            values.put(UTILISATEUR_PRENOM, utilisateur.getPrenom());
+            values.put(UTILISATEUR_NOM, utilisateur.getNom());
+            values.put(UTILISATEUR_ESTPROF, utilisateur.getEstProf());
 
-        db.insert(TABLE_UTILISATEUR, null, values);
-        db.close();
+            db.insert(TABLE_UTILISATEUR, null, values);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            db.close();
+        }
+
     }
 
     //Récupérer un utilisateur--------------------------------------------------------------------
     Utilisateur getUtilisateur(String matricule) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(
-                TABLE_UTILISATEUR,
-                new String[] {
-                    UTILISATEUR_ID,
-                    UTILISATEUR_MATRICULE,
-                    UTILISATEUR_MDP,
-                    UTILISATEUR_PRENOM,
-                    UTILISATEUR_NOM,
-                    UTILISATEUR_ESTPROF
-                },
-                UTILISATEUR_MATRICULE + "=?",
-                new String[] { String.valueOf(matricule) },
-                null,
-                null,
-                null,
-                null
-        );
+        try{
+            Cursor cursor = db.query(
+                    TABLE_UTILISATEUR,
+                    new String[] {
+                            UTILISATEUR_ID,
+                            UTILISATEUR_MATRICULE,
+                            UTILISATEUR_MDP,
+                            UTILISATEUR_PRENOM,
+                            UTILISATEUR_NOM,
+                            UTILISATEUR_ESTPROF
+                    },
+                    UTILISATEUR_MATRICULE + "=?",
+                    new String[] { String.valueOf(matricule) },
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (cursor != null)
+                cursor.moveToFirst();
 
-        if (cursor != null)
-            cursor.moveToFirst();
+            Utilisateur utilisateur = new Utilisateur(
+                    cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getInt(4) != 0
+            );
 
-        Utilisateur utilisateur = new Utilisateur(
-                cursor.getString(0),
-                cursor.getString(1),
-                cursor.getString(2),
-                cursor.getString(3),
-                cursor.getInt(4) != 0
-        );
+            return utilisateur;
 
-        return utilisateur;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return null;
     }
 
     //Comparer MDP -------------------------------------------------------------------------------
@@ -169,60 +182,71 @@ public class ExamDB extends SQLiteOpenHelper {
     void addExamen(Examen exam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat heureFormat = new SimpleDateFormat("HH:mm:ss");
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat heureFormat = new SimpleDateFormat("HH:mm:ss");
 
-        ContentValues values = new ContentValues();
-        values.put(EXAMEN_ANNEE, exam.getAnnee());
-        values.put(EXAMEN_COURS, exam.getCours());
-        values.put(EXAMEN_DATE, dateFormat.format(exam.getDate()));
-        values.put(EXAMEN_TYPE, exam.getTypeExam());
-        values.put(EXAMEN_DESCRIPTION, exam.getDescription());
-        values.put(EXAMEN_DUREE, exam.getDureeMinute());
-        values.put(EXAMEN_HEURE, heureFormat.format(exam.getDate()));
+            ContentValues values = new ContentValues();
+            values.put(EXAMEN_ANNEE, exam.getAnnee());
+            values.put(EXAMEN_COURS, exam.getCours());
+            values.put(EXAMEN_DATE, dateFormat.format(exam.getDate()));
+            values.put(EXAMEN_TYPE, exam.getTypeExam());
+            values.put(EXAMEN_DESCRIPTION, exam.getDescription());
+            values.put(EXAMEN_DUREE, exam.getDureeMinute());
+            values.put(EXAMEN_HEURE, heureFormat.format(exam.getDate()));
 
-        db.insert(TABLE_EXAMEN, null, values);
-        db.close();
+            db.insert(TABLE_EXAMEN, null, values);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            db.close();
+        }
     }
 
     //Récupérer un examen--------------------------------------------------------------------
     Examen getExamen(String cours) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(
-                TABLE_EXAMEN,
-                new String[] {
-                        EXAMEN_ID,
-                        EXAMEN_ANNEE,
-                        EXAMEN_COURS,
-                        EXAMEN_TYPE,
-                        EXAMEN_DESCRIPTION,
-                        EXAMEN_DATE,
-                        EXAMEN_DUREE,
-                        EXAMEN_HEURE,
-                },
-                EXAMEN_COURS + "=?",
-                new String[] { String.valueOf(cours) },
-                null,
-                null,
-                null,
-                null
-        );
+        try {
+            Cursor cursor = db.query(
+                    TABLE_EXAMEN,
+                    new String[]{
+                            EXAMEN_ID,
+                            EXAMEN_ANNEE,
+                            EXAMEN_COURS,
+                            EXAMEN_TYPE,
+                            EXAMEN_DESCRIPTION,
+                            EXAMEN_DATE,
+                            EXAMEN_DUREE,
+                            EXAMEN_HEURE,
+                    },
+                    EXAMEN_COURS + "=?",
+                    new String[]{String.valueOf(cours)},
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
-        if (cursor != null)
-            cursor.moveToFirst();
+            if (cursor != null)
+                cursor.moveToFirst();
 
-        Examen exam = new Examen(
-                cursor.getInt(0),
-                cursor.getInt(1),
-                cursor.getString(2),
-                cursor.getString(3),
-                new Date(cursor.getLong(4)),
-                cursor.getInt(5),
-                cursor.getInt(6)
-        );
+            Examen exam = new Examen(
+                    cursor.getInt(0),
+                    cursor.getInt(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    new Date(cursor.getLong(4)),
+                    cursor.getInt(5),
+                    cursor.getInt(6)
+            );
 
-        return exam;
+            return exam;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            db.close();
+        }
+        return null;
     }
-
 }
