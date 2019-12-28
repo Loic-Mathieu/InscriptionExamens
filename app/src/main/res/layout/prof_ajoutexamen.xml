@@ -5,7 +5,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="645dp"
+        android:layout_height="564dp"
         android:orientation="vertical">
 
         <Spinner
@@ -24,24 +24,24 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="start|top"
-            android:inputType="textMultiLine"
-            android:hint="description"/>
+            android:hint="description"
+            android:inputType="textMultiLine" />
 
         <EditText
             android:id="@+id/iDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="date"
-            android:hint="Date" />
+            android:hint="Date"
+            android:inputType="date" />
 
         <EditText
             android:id="@+id/iDuree"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="number"
-            android:hint="durée"/>
+            android:hint="durée"
+            android:inputType="number" />
     </LinearLayout>
 
     <Button

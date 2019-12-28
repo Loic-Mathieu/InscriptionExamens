@@ -1,13 +1,21 @@
 package be.hers.info.inscriptionexamens;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
@@ -30,6 +38,7 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -49,20 +58,19 @@ public class MainActivity extends AppCompatActivity
         //System.out.println("Matricule : "+cedric.getMatricule() + "/ Nom : " + cedric.getNom());
 
         //J'ajoute deux examens just pr tester
-        Date date = new Date();
-        date.setYear(2019);
-        date.setMonth(12);
-        date.setDate(27);
-        date.setHours(12);
-        date.setMinutes(30);
-        Examen exam1 = new Examen(1,TypeExamen.valueOf("EcritPc"),"blabla", date ,60);
-        Date date2 = new Date();
-        date.setYear(2019);
-        date.setMonth(12);
-        date.setDate(28);
-        date.setHours(14);
-        date.setMinutes(25);
-        Examen exam2 = new Examen(2, TypeExamen.valueOf("Oral"),"blabla2", date2 ,20);
+        LocalDateTime date1 = LocalDateTime.of(2019, 12, 27, 12, 30);
+        Examen exam1 = new Examen(1,TypeExamen.EcritPc,"blabla", date1 ,60);
+        LocalDateTime date2 = LocalDateTime.of(2019, 12, 27, 12, 30);
+        Examen exam2 = new Examen(2, TypeExamen.Oral,"blabla2", date2 ,20);
+
+        db.addExamen(exam1);
+        db.addExamen(exam2);
+
+        Examen test = db.getExamen(1);
+
+        TextView textView = findViewById(R.id.titreConnexion);
+        textView.setText(""+test.id);
+
 
         //PROBLEME ID.................
         System.out.println("IDEXAMS : "+exam1.id+" "+exam2.id);

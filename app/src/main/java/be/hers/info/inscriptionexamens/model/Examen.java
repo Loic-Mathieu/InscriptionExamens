@@ -1,8 +1,6 @@
 package be.hers.info.inscriptionexamens.model;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Examen
 {
@@ -11,10 +9,10 @@ public class Examen
 
     public TypeExamen typeExam;
     public String description;
-    public Date date;
+    public LocalDateTime date;
     public int dureeMinute;
 
-    public Examen(int refCours, TypeExamen typeExam, String description, Date date, int dureeMinute)
+    public Examen(int refCours, TypeExamen typeExam, String description, LocalDateTime date, int dureeMinute)
     {
         this.refCours = refCours;
         this.typeExam = typeExam;
@@ -39,4 +37,6 @@ public class Examen
         this.description = "Description";
         this.dureeMinute = 50;
     }
+
+    public void setId(int i){this.id = i;}
 }
