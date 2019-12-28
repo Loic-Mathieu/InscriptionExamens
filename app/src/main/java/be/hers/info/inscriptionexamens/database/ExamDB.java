@@ -72,7 +72,7 @@ public class ExamDB extends SQLiteOpenHelper {
             +EXAMEN_HEURE +" TIMESTAMP not null);";
 
 
-    //Table Examen----------------------------------------------------------------------------
+    //Table Cours----------------------------------------------------------------------------
     private static final String TABLE_COURS = "cours";
     private static final String COURS_ID = "_id";
     //"_id" obligatoire pour les PK sinon certaines fonctions d'android risquent de ne pas aller
@@ -228,7 +228,7 @@ public class ExamDB extends SQLiteOpenHelper {
             SimpleDateFormat heureFormat = new SimpleDateFormat("HH:mm:ss");
 
             ContentValues values = new ContentValues();
-            values.put(EXAMEN_ANNEE, exam.annee);
+            //values.put(EXAMEN_ANNEE, exam.annee);
             values.put(EXAMEN_COURS, exam.refCours);
             values.put(EXAMEN_DATE, dateFormat.format(exam.date));
             values.put(EXAMEN_TYPE, exam.typeExam);

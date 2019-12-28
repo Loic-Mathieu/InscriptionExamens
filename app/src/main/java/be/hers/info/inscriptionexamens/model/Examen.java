@@ -13,8 +13,9 @@ public class Examen
     public Date date;
     public int dureeMinute;
 
-    public Examen(int refCours, String typeExam, String description, Date date, int dureeMinute)
+    public Examen(int id, int refCours, String typeExam, String description, Date date, int dureeMinute)
     {
+        this.id = id;
         this.refCours = refCours;
         this.typeExam = typeExam;
         this.description = description;
@@ -22,7 +23,7 @@ public class Examen
         this.dureeMinute = dureeMinute;
     }
 
-    public Examen(int refCours, String typeExam, String description, int dureeMinute)
+    public Examen(int id, int refCours, String typeExam, String description, int dureeMinute)
     {
         this.refCours = refCours;
         this.typeExam = typeExam;
