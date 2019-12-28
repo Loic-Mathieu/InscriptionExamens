@@ -23,6 +23,7 @@ public class MainPage_etud extends AppCompatActivity
         // TODO from DB
         customList.add(new Examen());
         customList.add(new Examen());
+        customList.add(new Examen());
     }
 
     @Override
@@ -31,6 +32,7 @@ public class MainPage_etud extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+        // Toast
         Toast.makeText(MainPage_etud.this, "Page Etud !", Toast.LENGTH_SHORT).show();
 
         // Adapter la liste au model custom

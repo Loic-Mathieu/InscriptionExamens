@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity
     {
         // TODO : DB check
         return true;
+
     }
 
     private boolean isTeacher(String matricule)
@@ -66,10 +67,10 @@ public class MainActivity extends AppCompatActivity
         Examen exam2 = new Examen(2,1,"oral","blabla2", date2 ,20);
 
         //PROBLEME ID.................
-        System.out.println("IDEXAMS : "+exam1.getId()+" "+exam2.getId());
+        System.out.println("IDEXAMS : "+exam1.id+" "+exam2.id);
 
-        luke.addToList(Integer.toString(exam1.getId()));
-        luke.addToList(Integer.toString(exam2.getId()));
+        luke.addToList(Integer.toString(exam1.id));
+        luke.addToList(Integer.toString(exam2.id));
         //-----
         //Je try récup
         System.out.println("LISTE EXAM : " +luke.getListeExamens());

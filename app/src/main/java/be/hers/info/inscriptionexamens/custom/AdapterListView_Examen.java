@@ -1,6 +1,5 @@
 package be.hers.info.inscriptionexamens.custom;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,7 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
 
         // Nom du cours
         TextView nomCours = view.findViewById(R.id.nomCours);
-        nomCours.setText(examen.cours);
+        nomCours.setText("" + examen.refCours);
 
         // Quadrimestre
         TextView quadri = view.findViewById(R.id.quadri);

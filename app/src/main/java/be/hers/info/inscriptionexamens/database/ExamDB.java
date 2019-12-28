@@ -212,13 +212,13 @@ public class ExamDB extends SQLiteOpenHelper {
             SimpleDateFormat heureFormat = new SimpleDateFormat("HH:mm:ss");
 
             ContentValues values = new ContentValues();
-            values.put(EXAMEN_ANNEE, exam.getAnnee());
-            values.put(EXAMEN_COURS, exam.getCours());
-            values.put(EXAMEN_DATE, dateFormat.format(exam.getDate()));
-            values.put(EXAMEN_TYPE, exam.getTypeExam());
-            values.put(EXAMEN_DESCRIPTION, exam.getDescription());
-            values.put(EXAMEN_DUREE, exam.getDureeMinute());
-            values.put(EXAMEN_HEURE, heureFormat.format(exam.getDate()));
+            values.put(EXAMEN_ANNEE, exam.annee);
+            values.put(EXAMEN_COURS, exam.refCours);
+            values.put(EXAMEN_DATE, dateFormat.format(exam.date));
+            values.put(EXAMEN_TYPE, exam.typeExam);
+            values.put(EXAMEN_DESCRIPTION, exam.description);
+            values.put(EXAMEN_DUREE, exam.dureeMinute);
+            values.put(EXAMEN_HEURE, heureFormat.format(exam.date));
 
             db.insert(TABLE_EXAMEN, null, values);
         }catch(Exception e){
@@ -267,9 +267,9 @@ public class ExamDB extends SQLiteOpenHelper {
 
             String str_d = cursor.getString(5);
             Date date = new Date(str_d);
-            exam.setDate(date);
+            exam.date = date;
 
-            System.out.println("COMOESTA : "+exam.getDate());
+            System.out.println("COMOESTA : "+exam.date);
 
 
 
