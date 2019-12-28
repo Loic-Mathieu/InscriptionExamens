@@ -7,10 +7,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import be.hers.info.inscriptionexamens.custom.ListeExamen;
+import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
+import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 public class MainPage_etud extends AppCompatActivity
 {
@@ -32,6 +36,11 @@ public class MainPage_etud extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+
+        //Je récup la DB depuis l'intent
+        ExamDB db = (ExamDB)getIntent().getSerializableExtra("database");
+
+
 
         Toast.makeText(MainPage_etud.this, "Page Etud !", Toast.LENGTH_SHORT).show();
 /*

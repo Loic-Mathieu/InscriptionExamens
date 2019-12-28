@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.util.Calendar;
 
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
-public class ExamDB extends SQLiteOpenHelper {
+public class ExamDB extends SQLiteOpenHelper implements Serializable {
 
     //Info DB-------------------------------------------------------------------------------------
     private final static String dbName = "ExamDB";
@@ -54,22 +55,18 @@ public class ExamDB extends SQLiteOpenHelper {
     private static final String EXAMEN_ID = "_id";
     //"_id" obligatoire pour les PK sinon certaines fonctions d'android risquent de ne pas aller
     private static final String EXAMEN_COURS = "cours";
-    private static final String EXAMEN_ANNEE = "annee";
     private static final String EXAMEN_TYPE = "type";
     private static final String EXAMEN_DESCRIPTION = "description";
     private static final String EXAMEN_DATE = "date";
     private static final String EXAMEN_DUREE = "duree";
-    private static final String EXAMEN_HEURE = "heure";
 
     private static final String CREATE_TABLE_EXAMEN =  "create table " + TABLE_EXAMEN + " ("
             +EXAMEN_ID + " integer primary key autoincrement, "
             +EXAMEN_COURS + " int not null, "
-            +EXAMEN_ANNEE + " int not null, "
             +EXAMEN_TYPE + " text not null, "
             +EXAMEN_DESCRIPTION + " text not null, "
             +EXAMEN_DATE + " date not null, "
-            +EXAMEN_DUREE +" int not null, "
-            +EXAMEN_HEURE +" TIMESTAMP not null);";
+            +EXAMEN_DUREE +" int not null);";
 
 
     //Création de la DB---------------------------------------------------------------------------
@@ -78,6 +75,8 @@ public class ExamDB extends SQLiteOpenHelper {
         try{
             db.execSQL(CREATE_TABLE_UTILISATEUR);
             db.execSQL(CREATE_TABLE_EXAMEN);
+            db.execSQL("UPDATE SQLITE_SEQUENCE SET SEQ=1 WHERE NAME='utilisateur';");
+            db.execSQL("UPDATE SQLITE_SEQUENCE SET SEQ=1 WHERE NAME='examen';");
         }catch(SQLException e) {
             e.printStackTrace();
         }
@@ -208,17 +207,14 @@ public class ExamDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            SimpleDateFormat heureFormat = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
             ContentValues values = new ContentValues();
-            values.put(EXAMEN_ANNEE, exam.getAnnee());
             values.put(EXAMEN_COURS, exam.getCours());
-            values.put(EXAMEN_DATE, dateFormat.format(exam.getDate()));
             values.put(EXAMEN_TYPE, exam.getTypeExam());
             values.put(EXAMEN_DESCRIPTION, exam.getDescription());
+            values.put(EXAMEN_DATE, dateFormat.format(exam.getDate()));
             values.put(EXAMEN_DUREE, exam.getDureeMinute());
-            values.put(EXAMEN_HEURE, heureFormat.format(exam.getDate()));
 
             db.insert(TABLE_EXAMEN, null, values);
         }catch(Exception e){
@@ -237,13 +233,11 @@ public class ExamDB extends SQLiteOpenHelper {
                     TABLE_EXAMEN,
                     new String[]{
                             EXAMEN_ID,
-                            EXAMEN_ANNEE,
                             EXAMEN_COURS,
                             EXAMEN_TYPE,
                             EXAMEN_DESCRIPTION,
                             EXAMEN_DATE,
                             EXAMEN_DUREE,
-                            EXAMEN_HEURE,
                     },
                     EXAMEN_COURS + "=?",
                     new String[]{String.valueOf(refCours)},
@@ -259,17 +253,19 @@ public class ExamDB extends SQLiteOpenHelper {
             Examen exam = new Examen(
 
                     cursor.getInt(1),
-                    cursor.getInt(2),
+                    cursor.getString(2),
                     cursor.getString(3),
-                    cursor.getString(4),
-                    cursor.getInt(6)
+                    null,
+                    cursor.getInt(5)
             );
 
-            String str_d = cursor.getString(5);
-            Date date = new Date(str_d);
+            System.out.println("EXAMEN : "+exam.getId()+"/"+exam.getCours()+"/"+exam.getTypeExam()+"/"+exam.getDescription()+"/"+exam.getTypeExam()+"/"+exam.getDureeMinute()+"/"+exam.getDate());
+
+            Date date = new Date(cursor.getString(4));
+            System.out.println("STRING DATE : "+ date);
             exam.setDate(date);
 
-            System.out.println("COMOESTA : "+exam.getDate());
+            System.out.println("EXAMEN : "+exam.getId()+"/"+exam.getCours()+"/"+exam.getTypeExam()+"/"+exam.getDescription()+"/"+exam.getTypeExam()+"/"+exam.getDureeMinute()+"/"+exam.getDate());
 
 
 

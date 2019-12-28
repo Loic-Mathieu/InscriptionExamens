@@ -25,7 +25,7 @@ public class ListeExamen extends ArrayAdapter<String>
         this.context = context;
     }
 
-    public View getView(int position, View view, ViewGroup parent)
+    /*public View getView(int position, View view, ViewGroup parent)
     {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.examen, null, true);
@@ -36,8 +36,8 @@ public class ListeExamen extends ArrayAdapter<String>
 
         // Quadrimestre
         TextView quadri = rowView.findViewById(R.id.quadri);
-        quadri.setText((examens.get(position)).getQuadrimestre());
+        quadri.setText((examens.get(position)).getCours().getQuadrimestre());
 
         return rowView;
-    }
+    }*/
 }
