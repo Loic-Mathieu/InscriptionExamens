@@ -12,6 +12,7 @@ import java.util.Date;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Examen;
+import be.hers.info.inscriptionexamens.model.TypeExamen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 public class MainActivity extends AppCompatActivity
@@ -54,14 +55,14 @@ public class MainActivity extends AppCompatActivity
         date.setDate(27);
         date.setHours(12);
         date.setMinutes(30);
-        Examen exam1 = new Examen(1,1,"écrit papier","blabla", date ,60);
+        Examen exam1 = new Examen(1,TypeExamen.valueOf("EcritPc"),"blabla", date ,60);
         Date date2 = new Date();
         date.setYear(2019);
         date.setMonth(12);
         date.setDate(28);
         date.setHours(14);
         date.setMinutes(25);
-        Examen exam2 = new Examen(2,1,"oral","blabla2", date2 ,20);
+        Examen exam2 = new Examen(2, TypeExamen.valueOf("Oral"),"blabla2", date2 ,20);
 
         //PROBLEME ID.................
         System.out.println("IDEXAMS : "+exam1.id+" "+exam2.id);
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity
 
                         if(db.verifierEstProf(matricule.getText().toString()))
                         {
-                            Intent intent = new Intent(getApplicationContext(), MainPage_prof.class);
+                            Intent intent = new Intent(getApplicationContext(), Prof_MainPage.class);
                             // intent.putExtra("name", val);
                             startActivity(intent);
                         }

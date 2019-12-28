@@ -6,12 +6,12 @@
     <LinearLayout
         android:id="@+id/elExam"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="307dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -21,9 +21,21 @@
                 android:hint="@string/foo" />
 
             <TextView
-                android:id="@+id/quadri"
+                android:id="@+id/typeExam"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/foo" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/foo" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="@string/foo" />
 
         </LinearLayout>

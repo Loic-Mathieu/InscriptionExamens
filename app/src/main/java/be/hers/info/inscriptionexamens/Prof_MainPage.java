@@ -8,25 +8,25 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Etud_MainPage extends AppCompatActivity
+public class Prof_MainPage extends AppCompatActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.etud_mainpage);
+        setContentView(R.layout.prof_mainpage);
 
         // Toast
-        Toast.makeText(Etud_MainPage.this, "Page Etud !", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Prof_MainPage.this, "Page Prof !", Toast.LENGTH_SHORT).show();
 
         // Page d'inscription
-        Button changePage_inscription = findViewById(R.id.bChange_pInscription);
-        changePage_inscription.setOnClickListener(
+        Button changePage_listeExamens = findViewById(R.id.bChange_pListeExamens);
+        changePage_listeExamens.setOnClickListener(
                 new View.OnClickListener()
                 {
                     public void onClick(View v)
                     {
-                        Intent intent = new Intent(getApplicationContext(), Etud_InscriptionExamen.class);
+                        Intent intent = new Intent(getApplicationContext(), Prof_ListeExamens.class);
                         // intent.putExtra("name", val);
                         startActivity(intent);
                     }
@@ -34,13 +34,13 @@ public class Etud_MainPage extends AppCompatActivity
         );
 
         // Page de désinscription
-        Button changePage_desinscription = findViewById(R.id.bChange_pDesinscription);
-        changePage_desinscription.setOnClickListener(
+        Button changePage_ajouterExamen = findViewById(R.id.bChange_pAjouterExamen);
+        changePage_ajouterExamen.setOnClickListener(
                 new View.OnClickListener()
                 {
                     public void onClick(View v)
                     {
-                        Intent intent = new Intent(getApplicationContext(), Etud_DesinscriptionExamen.class);
+                        Intent intent = new Intent(getApplicationContext(), Prof_AjouterExamen.class);
                         // intent.putExtra("name", val);
                         startActivity(intent);
                     }

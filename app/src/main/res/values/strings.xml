@@ -8,9 +8,15 @@
     <string name="bConnect">Se connecter</string>
     <string name="bInscription">S\'inscrire</string>
     <string name="bDesinscription">Se désinscrire</string>
+    <string name="bAjouterExamen">Ajouter un examen</string>
+    <string name="bListerExamens">Lister les examens</string>
 
     <string name="iMatricule">Matricule</string>
     <string name="iPassword">Mot de passe</string>
 
     <string name="foo">PLACE_HOLDER</string>
+    <string name="oMenu">Menu</string>
+    <string name="oListeExamens">Liste des examens</string>
+    <string name="bSupprimer">Supprimer</string>
+    <string name="bValider">Valider</string>
 </resources>

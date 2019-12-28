@@ -17,7 +17,7 @@
         android:id="@+id/customListExams"
         android:layout_width="match_parent"
         android:layout_height="519dp"
-        android:dividerHeight="10sp"
+        android:padding="10dp"
     >
 
     </ListView>

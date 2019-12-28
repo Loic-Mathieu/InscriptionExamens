@@ -36,9 +36,11 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
         TextView nomCours = view.findViewById(R.id.nomCours);
         nomCours.setText("" + examen.refCours);
 
-        // Quadrimestre
-        TextView quadri = view.findViewById(R.id.quadri);
-        quadri.setText("" + examen.quadrimestre);
+        // Type d'examen
+        TextView quadri = view.findViewById(R.id.typeExam);
+        quadri.setText(examen.typeExam.toString());
+        TextView description = view.findViewById(R.id.description);
+        quadri.setText(examen.description);
 
         return view;
     }

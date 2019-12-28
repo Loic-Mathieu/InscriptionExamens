@@ -16,6 +16,7 @@ import java.util.Date;
 
 import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
+import be.hers.info.inscriptionexamens.model.TypeExamen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 public class ExamDB extends SQLiteOpenHelper {
@@ -228,10 +229,10 @@ public class ExamDB extends SQLiteOpenHelper {
             SimpleDateFormat heureFormat = new SimpleDateFormat("HH:mm:ss");
 
             ContentValues values = new ContentValues();
-            values.put(EXAMEN_ANNEE, exam.annee);
+            // values.put(EXAMEN_ANNEE, exam.annee);
             values.put(EXAMEN_COURS, exam.refCours);
             values.put(EXAMEN_DATE, dateFormat.format(exam.date));
-            values.put(EXAMEN_TYPE, exam.typeExam);
+            values.put(EXAMEN_TYPE, exam.typeExam.toString());
             values.put(EXAMEN_DESCRIPTION, exam.description);
             values.put(EXAMEN_DUREE, exam.dureeMinute);
             values.put(EXAMEN_HEURE, heureFormat.format(exam.date));
@@ -275,8 +276,7 @@ public class ExamDB extends SQLiteOpenHelper {
             Examen exam = new Examen(
 
                     cursor.getInt(1),
-                    cursor.getInt(2),
-                    cursor.getString(3),
+                    TypeExamen.valueOf(cursor.getString(3)), // String vers -> enum
                     cursor.getString(4),
                     cursor.getInt(6)
             );

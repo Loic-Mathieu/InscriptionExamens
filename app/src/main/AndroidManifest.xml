@@ -40,7 +40,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainPage_prof">
+        <activity android:name=".Prof_MainPage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Prof_ListeExamens">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Prof_AjouterExamen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

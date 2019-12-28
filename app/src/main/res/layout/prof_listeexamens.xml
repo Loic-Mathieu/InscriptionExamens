@@ -6,27 +6,26 @@
 
 
     <TextView
-        android:id="@+id/secondTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="26sp"
         android:gravity="center"
-        android:text="@string/inscription" />
+        android:text="@string/oListeExamens" />
 
     <ListView
         android:id="@+id/customListExams"
         android:layout_width="match_parent"
         android:layout_height="519dp"
-    >
+        >
 
     </ListView>
 
     <Button
-        android:id="@+id/bInscription"
+        android:id="@+id/bSuppression"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bInscription"
-    />
+        android:text="@string/bSupprimer"
+        />
 
 
 </LinearLayout>
