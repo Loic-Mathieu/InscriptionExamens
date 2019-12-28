@@ -73,7 +73,7 @@ public class ExamDB extends SQLiteOpenHelper {
             +EXAMEN_HEURE +" TIMESTAMP not null);";
 
 
-    //Table Examen----------------------------------------------------------------------------
+    //Table Cours----------------------------------------------------------------------------
     private static final String TABLE_COURS = "cours";
     private static final String COURS_ID = "_id";
     //"_id" obligatoire pour les PK sinon certaines fonctions d'android risquent de ne pas aller

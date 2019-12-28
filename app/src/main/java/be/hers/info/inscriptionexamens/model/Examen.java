@@ -11,7 +11,6 @@ public class Examen
 
     public TypeExamen typeExam;
     public String description;
-
     public Date date;
     public int dureeMinute;
 
