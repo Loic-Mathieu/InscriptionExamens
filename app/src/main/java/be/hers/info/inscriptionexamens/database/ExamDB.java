@@ -6,9 +6,12 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.util.Calendar;
 
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 
 import be.hers.info.inscriptionexamens.model.Cours;
@@ -35,6 +38,7 @@ public class ExamDB extends SQLiteOpenHelper {
     private static final String UTILISATEUR_PRENOM = "prenom";
     private static final String UTILISATEUR_NOM = "nom";
     private static final String UTILISATEUR_ESTPROF = "estProf";
+    private static final String UTILISATEUR_LISTEEXAMENS = "listeExamens";
 
     private static final String CREATE_TABLE_UTILISATEUR =  "create table " + TABLE_UTILISATEUR + " ("
             +UTILISATEUR_ID + " integer primary key autoincrement, "
@@ -42,7 +46,8 @@ public class ExamDB extends SQLiteOpenHelper {
             +UTILISATEUR_MDP + " text not null, "
             +UTILISATEUR_PRENOM + " text not null, "
             +UTILISATEUR_NOM + " text not null, "
-            +UTILISATEUR_ESTPROF +" boolean not null);";
+            +UTILISATEUR_ESTPROF +" boolean not null, "
+            +UTILISATEUR_LISTEEXAMENS +" text not null);";
 
     //Table Examen----------------------------------------------------------------------------
     private static final String TABLE_EXAMEN = "examen";
@@ -64,7 +69,7 @@ public class ExamDB extends SQLiteOpenHelper {
             +EXAMEN_DESCRIPTION + " text not null, "
             +EXAMEN_DATE + " date not null, "
             +EXAMEN_DUREE +" int not null, "
-            +EXAMEN_HEURE +" date not null);";
+            +EXAMEN_HEURE +" TIMESTAMP not null);";
 
 
     //Création de la DB---------------------------------------------------------------------------
@@ -95,11 +100,21 @@ public class ExamDB extends SQLiteOpenHelper {
 
         try{
             ContentValues values = new ContentValues();
+            StringBuilder str = new StringBuilder();
+            ArrayList<String> listeExam = utilisateur.getListeExamens();
+
+            for(int i=0; i<listeExam.size(); i++){
+                str.append(listeExam.get(i) + "|");
+            }
+
+            String resListe = str.toString();
+
             values.put(UTILISATEUR_MATRICULE, utilisateur.getMatricule());
             values.put(UTILISATEUR_MDP, utilisateur.getMdp());
             values.put(UTILISATEUR_PRENOM, utilisateur.getPrenom());
             values.put(UTILISATEUR_NOM, utilisateur.getNom());
             values.put(UTILISATEUR_ESTPROF, utilisateur.getEstProf());
+            values.put(UTILISATEUR_LISTEEXAMENS, resListe);
 
             db.insert(TABLE_UTILISATEUR, null, values);
         }catch(Exception e){
@@ -123,7 +138,8 @@ public class ExamDB extends SQLiteOpenHelper {
                             UTILISATEUR_MDP,
                             UTILISATEUR_PRENOM,
                             UTILISATEUR_NOM,
-                            UTILISATEUR_ESTPROF
+                            UTILISATEUR_ESTPROF,
+                            UTILISATEUR_LISTEEXAMENS
                     },
                     UTILISATEUR_MATRICULE + "=?",
                     new String[] { String.valueOf(matricule) },
@@ -143,6 +159,15 @@ public class ExamDB extends SQLiteOpenHelper {
                     cursor.getString(4),
                     cursor.getInt(5) != 0
             );
+
+            String str = cursor.getString(6);
+            String[] separation = str.split("|");
+            ArrayList<String> listeExam = new ArrayList<>();
+
+            for(int i=0; i < separation.length; i++){
+                listeExam.add(separation[i]);
+            }
+
             return utilisateur;
 
         }catch(Exception e){
@@ -156,10 +181,10 @@ public class ExamDB extends SQLiteOpenHelper {
     //Comparer MDP -------------------------------------------------------------------------------
     public Boolean comparerMDP(String matricule, String mdp){
 
-        System.out.println("USER : " + matricule + "/" + mdp);
+        //System.out.println("USER : " + matricule + "/" + mdp);
         Utilisateur x = getUtilisateur(matricule);
 
-        System.out.println("X : " + x.getMatricule() + "/" + x.getMdp());
+        //System.out.println("X : " + x.getMatricule() + "/" + x.getMdp());
         if (mdp.equals(x.getMdp())) {
             return true;
         }
@@ -167,7 +192,7 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Check si prof ou eleve ---------------------------------------------------------------------
-    Boolean verifierEstProf(String matricule){
+    public Boolean verifierEstProf(String matricule){
         Utilisateur x = getUtilisateur(matricule);
         if(x.getEstProf()){
             return true;
@@ -204,7 +229,7 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Récupérer un examen--------------------------------------------------------------------
-    public Examen getExamen(String cours) {
+    public Examen getExamen(int refCours) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         try {
@@ -221,7 +246,7 @@ public class ExamDB extends SQLiteOpenHelper {
                             EXAMEN_HEURE,
                     },
                     EXAMEN_COURS + "=?",
-                    new String[]{String.valueOf(cours)},
+                    new String[]{String.valueOf(refCours)},
                     null,
                     null,
                     null,
@@ -232,14 +257,21 @@ public class ExamDB extends SQLiteOpenHelper {
                 cursor.moveToFirst();
 
             Examen exam = new Examen(
-                    cursor.getInt(0),
+
                     cursor.getInt(1),
-                    cursor.getString(2),
+                    cursor.getInt(2),
                     cursor.getString(3),
-                    new Date(cursor.getLong(4)),
-                    cursor.getInt(5),
+                    cursor.getString(4),
                     cursor.getInt(6)
             );
+
+            String str_d = cursor.getString(5);
+            Date date = new Date(str_d);
+            exam.setDate(date);
+
+            System.out.println("COMOESTA : "+exam.getDate());
+
+
 
             return exam;
         }catch(Exception e){

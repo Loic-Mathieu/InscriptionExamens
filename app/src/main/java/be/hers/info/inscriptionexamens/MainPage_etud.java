@@ -2,6 +2,7 @@ package be.hers.info.inscriptionexamens;
 
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +14,7 @@ import be.hers.info.inscriptionexamens.model.Examen;
 
 public class MainPage_etud extends AppCompatActivity
 {
-    ListView listView;
+    /*ListView listView;
     ArrayList<Examen> examens;
 
     private void initList()
@@ -23,8 +24,8 @@ public class MainPage_etud extends AppCompatActivity
         // TODO : load from DB
         /*examens.add(new Examen());
         examens.add(new Examen());
-        examens.add(new Examen());*/
-    }
+        examens.add(new Examen());
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,10 +33,11 @@ public class MainPage_etud extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-
+        Toast.makeText(MainPage_etud.this, "Page Etud !", Toast.LENGTH_SHORT).show();
+/*
         // Adapter la liste au modele custom
         ListeExamen customList = new ListeExamen(this, examens);
         this.listView = findViewById(R.id.customListExams);
-        listView.setAdapter(customList);
+        listView.setAdapter(customList);*/
     }
 }

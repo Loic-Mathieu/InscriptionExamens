@@ -1,5 +1,7 @@
 package be.hers.info.inscriptionexamens.model;
 
+import java.util.ArrayList;
+
 public class Utilisateur {
     int id;
     String prenom;
@@ -7,6 +9,7 @@ public class Utilisateur {
     String matricule;
     String mdp;
     boolean estProf;
+    ArrayList<String> listeExamens;
 
     public Utilisateur(){
         //cstr vide
@@ -18,6 +21,7 @@ public class Utilisateur {
         this.matricule = matricule;
         this.mdp = mdp;
         this.estProf = estProf;
+        listeExamens = new ArrayList<>();
     }
 
     public int getId() {
@@ -66,5 +70,17 @@ public class Utilisateur {
 
     public void setEstProf(boolean estProf) {
         this.estProf = estProf;
+    }
+
+    public ArrayList<String> getListeExamens() {
+        return listeExamens;
+    }
+
+    public void setListeExamens(ArrayList<String> listeExamens) {
+        this.listeExamens = listeExamens;
+    }
+
+    public void addToList(String refExam){
+        this.listeExamens.add(refExam);
     }
 }
