@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
@@ -100,7 +97,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         else
                         {
-                            Intent intent = new Intent(getApplicationContext(), MainPage_etud.class);
+                            Intent intent = new Intent(getApplicationContext(), Etud_MainPage.class);
                             // intent.putExtra("name", val);
                             startActivity(intent);
                         }

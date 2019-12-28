@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">inscriptionExamens</string>
-    <string name="bConnect">Se connecter</string>
-    <string name="iMatricule">Matricule</string>
-    <string name="bInscription">S\'inscrire</string>
     <string name="mainTitle">SAMPLE TEXT</string>
+
+    <string name="inscription">Inscription</string>
+    <string name="desinscription">Désinscription</string>
+
+    <string name="bConnect">Se connecter</string>
+    <string name="bInscription">S\'inscrire</string>
+    <string name="bDesinscription">Se désinscrire</string>
+
+    <string name="iMatricule">Matricule</string>
+    <string name="iPassword">Mot de passe</string>
+
+    <string name="foo">PLACE_HOLDER</string>
 </resources>

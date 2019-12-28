@@ -4,29 +4,34 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/elExam"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/elExam"
-    >
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/nomCours"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        />
+        <LinearLayout
+            android:layout_width="307dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/quadri"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        />
+            <TextView
+                android:id="@+id/nomCours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/foo" />
+
+            <TextView
+                android:id="@+id/quadri"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:hint="@string/foo" />
+
+        </LinearLayout>
 
         <CheckBox
             android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="CheckBox" />
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

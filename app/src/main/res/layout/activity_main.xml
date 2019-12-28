@@ -18,7 +18,7 @@
             android:id="@+id/titreConnexion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
+            android:text="@string/mainTitle"
             android:textSize="26sp"
             android:gravity="center"
         />
@@ -29,14 +29,15 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@string/iMatricule" />
+            android:hint="@string/iMatricule" />
 
         <EditText
             android:id="@+id/iPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:hint="@string/iPassword" />
 
         <Button
             android:id="@+id/bConnect"
