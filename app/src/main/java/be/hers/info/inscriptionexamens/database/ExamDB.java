@@ -72,12 +72,28 @@ public class ExamDB extends SQLiteOpenHelper {
             +EXAMEN_HEURE +" TIMESTAMP not null);";
 
 
+    //Table Examen----------------------------------------------------------------------------
+    private static final String TABLE_COURS = "cours";
+    private static final String COURS_ID = "_id";
+    //"_id" obligatoire pour les PK sinon certaines fonctions d'android risquent de ne pas aller
+    private static final String COURS_NOM = "nom";
+    private static final String COURS_QUADRIMESTTRE = "quadrimestre";
+    private static final String COURS_ANNEE = "annee";
+
+    private static final String CREATE_TABLE_COURS =  "create table " + TABLE_COURS + " ("
+            +COURS_ID + " integer primary key autoincrement, "
+            +COURS_NOM + " String not null, "
+            +COURS_ANNEE + " int not null, "
+            +COURS_QUADRIMESTTRE +" int not null);";
+    
+    
     //Création de la DB---------------------------------------------------------------------------
     @Override
     public void onCreate(SQLiteDatabase db) {
         try{
             db.execSQL(CREATE_TABLE_UTILISATEUR);
             db.execSQL(CREATE_TABLE_EXAMEN);
+            db.execSQL(CREATE_TABLE_COURS);
         }catch(SQLException e) {
             e.printStackTrace();
         }
@@ -277,6 +293,117 @@ public class ExamDB extends SQLiteOpenHelper {
         }catch(Exception e){
             e.printStackTrace();
         }finally{
+            db.close();
+        }
+        return null;
+    }
+
+    //********************************************************************************************
+    //**************************** METHODES COURS ******************************************
+    //********************************************************************************************
+    //Ajouter un cours-----------------------------------------------------------------------
+    public void addCours(Cours cours) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+            ContentValues values = new ContentValues();
+
+            values.put(COURS_NOM, cours.getNom());
+            values.put(COURS_ANNEE, cours.getAnnee());
+            values.put(COURS_QUADRIMESTTRE, cours.getQuadrimestre());
+
+            db.insert(TABLE_COURS, null, values);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            db.close();
+        }
+
+    }
+
+    //Récupérer un utilisateur--------------------------------------------------------------------
+    public Cours getCours(int refCours) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try{
+            Cursor cursor = db.query(
+                    TABLE_COURS,
+                    new String[] {
+                            COURS_ID,
+                            COURS_NOM,
+                            COURS_ANNEE,
+                            COURS_QUADRIMESTTRE
+                    },
+                    COURS_ID + "=?",
+                    new String[] { String.valueOf(refCours) },
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+
+            Cours cours = new Cours(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getInt(3)
+            );
+
+            return cours;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return null;
+    }
+
+    public ArrayList<Cours> getAllCours() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Cours> listeCours = new ArrayList<>();
+
+        try{
+            Cursor cursor = db.query(
+                    TABLE_COURS,
+                    new String[] {
+                            COURS_ID,
+                            COURS_NOM,
+                            COURS_ANNEE,
+                            COURS_QUADRIMESTTRE
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            if (cursor.moveToFirst()) {
+                do {
+                    Cours cours = new Cours(
+                            cursor.getInt(0),
+                            cursor.getString(1),
+                            cursor.getInt(2),
+                            cursor.getInt(3)
+                    );
+                    listeCours.add(cours);
+                }
+                while (cursor.moveToNext());
+            }
+
+            System.out.println("Liste des Cours : "+listeCours);
+            return listeCours;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
             db.close();
         }
         return null;
