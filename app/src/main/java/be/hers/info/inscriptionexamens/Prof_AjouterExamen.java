@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -111,6 +112,12 @@ public class Prof_AjouterExamen extends AppCompatActivity
         // Ajout dans la Db
         final ExamDB db = new ExamDB(this);
         db.addExamen(exam1);
+
+        String output = "Examen Ajouté !"
+                + exam1.date.toString() + " "
+                + exam1.typeExam;
+
+        Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -132,6 +139,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
             {
                 // Le mois en attribut commence à 0 (pour Janvier)
                 curDate = LocalDate.of(year, month+1, dayOfMonth);
+                System.out.println("DATE" + curDate.toString());
             }
         });
 
