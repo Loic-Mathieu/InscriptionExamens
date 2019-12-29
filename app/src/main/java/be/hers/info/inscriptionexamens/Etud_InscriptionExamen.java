@@ -1,5 +1,8 @@
 package be.hers.info.inscriptionexamens;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.SyncStats;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -15,17 +18,17 @@ import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Examen;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class Etud_InscriptionExamen extends AppCompatActivity
 {
     private AdapterListView_Examen customList;
+    private final ExamDB db = new ExamDB(this);
 
     /**
      * Initialise la listView d'examens
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initList()
     {
-        final ExamDB db = new ExamDB(this);
         customList.addAll(db.getAllExamen());
     }
 
@@ -44,6 +47,9 @@ public class Etud_InscriptionExamen extends AppCompatActivity
         // init liste
         initList();
 
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        final String matricule = preferences.getString("MATRICULE", "VIDE");
+
         Button bInscription = findViewById(R.id.bInscription);
         bInscription.setOnClickListener
         (
@@ -52,7 +58,11 @@ public class Etud_InscriptionExamen extends AppCompatActivity
                     public void onClick(View v)
                     {
                         ArrayList<Integer> list = customList.getSelectedIds();
-                        System.out.println("NOMBRE SELECTION " + list.size());
+                        for (int id_exam : list)
+                        {
+                            if(db.inscrireEleveAExamen(matricule, id_exam))
+                                System.out.println("ONE ADDED");
+                        }
                     }
                 }
         );

@@ -273,13 +273,15 @@ public class ExamDB extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(UTIL_EXAM_REFUTILISATEUR, x.getId());
             values.put(UTIL_EXAM_REFEXAMEN, id_exam);
-            
+
+            // TODO la contrainte ne lance ni erreur ni exception
             db.insert(TABLE_UTIL_EXAM, null, values);
 
             // Si aucune contraintes
             return true;
         }
         catch(Exception e){ e.printStackTrace(); }
+        catch(Error error){ error.printStackTrace(); }
         finally{ db.close(); }
 
         return false;

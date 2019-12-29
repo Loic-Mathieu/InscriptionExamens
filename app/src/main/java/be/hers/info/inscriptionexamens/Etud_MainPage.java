@@ -18,11 +18,8 @@ public class Etud_MainPage extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etud_mainpage);
 
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
-        String s = preferences.getString("MATRICULE", "VIDE");
-
         // Toast
-        Toast.makeText(Etud_MainPage.this, ("Page Etud !" + s), Toast.LENGTH_SHORT).show();
+        Toast.makeText(Etud_MainPage.this, ("Page Etud !"), Toast.LENGTH_SHORT).show();
 
         // Page d'inscription
         Button changePage_inscription = findViewById(R.id.bChange_pInscription);

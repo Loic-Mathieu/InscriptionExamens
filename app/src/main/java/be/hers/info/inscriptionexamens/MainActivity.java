@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         //On crée la DB
         final ExamDB db = new ExamDB(this);
 
+        // Si la db existe
         if(db.checkDataBase())
             return;
 
