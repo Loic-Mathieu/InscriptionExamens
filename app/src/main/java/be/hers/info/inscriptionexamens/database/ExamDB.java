@@ -637,13 +637,33 @@ public class ExamDB extends SQLiteOpenHelper {
         try
         {
             Utilisateur prof = getUtilisateur(matricule);
-            ArrayList<String> listeDuProf = prof.getListeExamens();
             ArrayList<Examen> listeExamens = new ArrayList<>();
 
-            System.out.println(listeDuProf);
+            Cursor cursor = db.query(
+                    TABLE_UTIL_EXAM,
+                    new String[]{
+                            UTIL_EXAM_REFUTILISATEUR,
+                            UTIL_EXAM_REFEXAMEN,
+                    },
+                    UTIL_EXAM_REFUTILISATEUR + "=?",
+                    new String[]{String.valueOf(prof.getId())},
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
-            for(int i = 0; i < listeDuProf.size(); i++){
-                listeExamens.add(getExamen(Integer.parseInt(listeDuProf.get(i))));
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                if(cursor.moveToFirst())
+                {
+                    // Add les références des examens dont un utilisateur est inscrit
+                    do {
+                        listeExamens.add(getExamen(cursor.getInt(1)));
+                    }
+                    while (cursor.moveToNext());
+                }
             }
 
             return listeExamens;
