@@ -161,9 +161,7 @@ public class Prof_ModifExamen extends AppCompatActivity
         final ExamDB db = new ExamDB(this);
         int x = db.updateExamen(examen.getId(), exam1);
 
-        String output = "Examen Modifié !"
-                + exam1.getId() + " "
-                + x;
+        String output = "Examen Modifié !";
 
         Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
     }

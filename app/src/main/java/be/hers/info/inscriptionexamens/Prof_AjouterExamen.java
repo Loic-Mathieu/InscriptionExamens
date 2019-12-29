@@ -123,8 +123,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
             db.inscrireUtilisateurAExamen(matricule, refExam);
         }
 
-        String output = "Examen Ajouté !"
-                + refExam;
+        String output = "Examen Ajouté !";
 
         Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
     }

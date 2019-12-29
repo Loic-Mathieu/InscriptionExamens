@@ -59,17 +59,5 @@ public class Prof_ListeExamens extends AppCompatActivity
 
         // init liste
         initList();
-
-        Button bInscription = findViewById(R.id.bSuppression);
-        bInscription.setOnClickListener
-        (
-                new View.OnClickListener()
-                {
-                    public void onClick(View v)
-                    {
-                        // TODO supprimer les cours
-                    }
-                }
-        );
     }
 }

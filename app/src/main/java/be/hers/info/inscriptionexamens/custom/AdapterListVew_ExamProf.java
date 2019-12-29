@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import be.hers.info.inscriptionexamens.Prof_ListeEtudiants;
 import be.hers.info.inscriptionexamens.Prof_ModifExamen;
 import be.hers.info.inscriptionexamens.R;
 import be.hers.info.inscriptionexamens.model.Examen;
@@ -76,7 +77,9 @@ public class AdapterListVew_ExamProf extends ArrayAdapter<Examen>
             @Override
             public void onClick(View v)
             {
-
+                Intent intent = new Intent(getContext(), Prof_ListeEtudiants.class);
+                intent.putExtra("ID_EXAM", examen.getId());
+                getContext().startActivity(intent);
             }
         });
 

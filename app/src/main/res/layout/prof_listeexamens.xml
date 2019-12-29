@@ -15,17 +15,10 @@
     <ListView
         android:id="@+id/customListExams"
         android:layout_width="match_parent"
-        android:layout_height="519dp"
+        android:layout_height="match_parent"
         >
 
     </ListView>
-
-    <Button
-        android:id="@+id/bSuppression"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bSupprimer"
-        />
 
 
 </LinearLayout>
