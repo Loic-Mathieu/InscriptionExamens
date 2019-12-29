@@ -4,30 +4,40 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/secondTitle"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="26sp"
-        android:gravity="center"
-        android:text="@string/desinscription" />
+        android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/customListExams"
-        android:layout_width="match_parent"
-        android:layout_height="519dp"
-        android:padding="10dp"
-    >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </ListView>
+            <TextView
+                android:id="@+id/secondTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:gravity="center"
+                android:text="@string/desinscription" />
 
-    <Button
-        android:id="@+id/bDesinscription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bDesinscription"
-        />
+            <ListView
+                android:id="@+id/customListExams"
+                android:layout_width="match_parent"
+                android:layout_height="519dp"
+                android:padding="10dp"
+            >
 
+            </ListView>
+
+            <Button
+                android:id="@+id/bDesinscription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bDesinscription"
+                />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
