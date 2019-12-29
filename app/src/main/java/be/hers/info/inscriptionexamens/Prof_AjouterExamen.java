@@ -112,20 +112,16 @@ public class Prof_AjouterExamen extends AppCompatActivity
 
         // Ajout dans la Db
         final ExamDB db = new ExamDB(this);
-        db.addExamen(exam1);
+        int refExam = db.addExamen(exam1);
 
         //Récupère le matricule de l'utilisateur connecté
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
         final String matricule = preferences.getString("MATRICULE", "VIDE");
 
-        //Récupère le prof selon son matricule
-        Utilisateur prof = db.getUtilisateur(matricule);
-        //Récupère sa liste d'examens
-        ArrayList<String> listeExams = prof.getListeExamens();
-        //Ajoute l'examen dans la liste
-        listeExams.add(""+exam1.getId());
-        //MAJ le prof
-        db.updateUtilisateur(prof);
+        //Inscrit l'exam au tableau de chasse du prof
+        if(refExam>0){
+            db.inscrireUtilisateurAExamen(matricule, refExam);
+        }
 
         String output = "Examen Ajouté !";
 
