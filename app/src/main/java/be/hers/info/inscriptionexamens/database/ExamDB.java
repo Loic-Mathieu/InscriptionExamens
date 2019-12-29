@@ -579,6 +579,59 @@ public class ExamDB extends SQLiteOpenHelper {
         return false;
     }
 
+    /**
+     * récupère une liste d'élèves inscrits à un examen
+     * @return listeEleves
+     */
+    public ArrayList<Integer> listerInscrits(int refExam) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+            //Utilisation de deux listes pour davantage de clarté
+            ArrayList<Integer> listeUtilisateurs = new ArrayList<>();
+            ArrayList<Integer> listeEtudiants = new ArrayList<>();
+
+            Cursor cursor = db.query(
+                    TABLE_UTIL_EXAM,
+                    new String[]{
+                            UTIL_EXAM_REFUTILISATEUR
+                    },
+                    UTIL_EXAM_REFEXAMEN + "=?",
+                    new String[]{String.valueOf(refExam)},
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                if(cursor.moveToFirst())
+                {
+                    // Add les références des utilisateurs inscrits à cet examen
+                    do {
+                        listeUtilisateurs.add(cursor.getInt(0));
+                    }
+                    while (cursor.moveToNext());
+                }
+
+                for(int i = 0; i < listeEtudiants.size(); i++){
+                    Utilisateur utilisateur = getUtilisateurByID(listeUtilisateurs.get(i));
+                    if(!utilisateur.getEstProf()){
+                        listeEtudiants.add(utilisateur.getId());
+                    }
+                }
+            }
+            return listeEtudiants;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return null;
+    }
+
     //********************************************************************************************
     //**************************** METHODES COURS ******************************************
     //********************************************************************************************
