@@ -519,6 +519,33 @@ public class ExamDB extends SQLiteOpenHelper {
         return null;
     }
 
+
+    /**
+     * Récupères tous les examens de la db créés par le prof
+     * @return liste d'examens enregistrés dans la DB
+     */
+    public List<Examen> getAllExamenProf(String matricule)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try
+        {
+            Utilisateur prof = getUtilisateur(matricule);
+            ArrayList<String> listeDuProf = prof.getListeExamens();
+            ArrayList<Examen> listeExamens = new ArrayList<>();
+
+            for(int i = 0; i < listeDuProf.size(); i++){
+                listeExamens.add(getExamen(Integer.parseInt(listeDuProf.get(i))));
+            }
+
+            return listeExamens;
+        }
+        catch(Exception e){ e.printStackTrace(); }
+        finally { db.close(); }
+
+        return null;
+    }
+
     /**
      * Delete un examen de la db
      */

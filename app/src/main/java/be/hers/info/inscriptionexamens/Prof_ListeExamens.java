@@ -1,5 +1,7 @@
 package be.hers.info.inscriptionexamens;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -26,8 +28,12 @@ public class Prof_ListeExamens extends AppCompatActivity
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initList()
     {
+        //Récupère le matricule de l'utilisateur connecté
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        final String matricule = preferences.getString("MATRICULE", "VIDE");
+
         final ExamDB db = new ExamDB(this);
-        customList.addAll(db.getAllExamen());
+        customList.addAll(db.getAllExamenProf(matricule));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
