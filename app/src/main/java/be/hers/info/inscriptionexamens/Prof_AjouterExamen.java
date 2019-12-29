@@ -1,5 +1,7 @@
 package be.hers.info.inscriptionexamens;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +29,7 @@ import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.TypeExamen;
+import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Prof_AjouterExamen extends AppCompatActivity
@@ -110,6 +113,19 @@ public class Prof_AjouterExamen extends AppCompatActivity
         // Ajout dans la Db
         final ExamDB db = new ExamDB(this);
         db.addExamen(exam1);
+
+        //Récupère le matricule de l'utilisateur connecté
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        final String matricule = preferences.getString("MATRICULE", "VIDE");
+
+        //Récupère le prof selon son matricule
+        Utilisateur prof = db.getUtilisateur(matricule);
+        //Récupère sa liste d'examens
+        ArrayList<String> listeExams = prof.getListeExamens();
+        //Ajoute l'examen dans la liste
+        listeExams.add(""+exam1.getId());
+        //MAJ le prof
+        db.updateUtilisateur(prof);
 
         String output = "Examen Ajouté !"
                 + exam1.date.toString() + " "
