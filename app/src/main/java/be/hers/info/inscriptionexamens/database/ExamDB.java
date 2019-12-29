@@ -342,6 +342,11 @@ public class ExamDB extends SQLiteOpenHelper {
                             cursor.getString(3),
                             cursor.getInt(5)
                         );
+
+                        String str_d = cursor.getString(4);
+                        LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+                        exam.date = date;
+
                         exam.setId(cursor.getInt(0));
                         listeExamens.add(exam);
                     }

@@ -33,14 +33,25 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
         }
 
         // Nom du cours
-        TextView nomCours = view.findViewById(R.id.nomCours);
+        TextView nomCours = view.findViewById(R.id.oNomCours);
         nomCours.setText("" + examen.refCours);
 
         // Type d'examen
-        TextView quadri = view.findViewById(R.id.typeExam);
-        quadri.setText(examen.typeExam.toString());
-        TextView description = view.findViewById(R.id.description);
-        quadri.setText(examen.description);
+        TextView oQuadri = view.findViewById(R.id.oTypeExam);
+        oQuadri.setText(examen.typeExam.label);
+        TextView oDescription = view.findViewById(R.id.oDescription);
+        oDescription.setText(examen.description);
+
+        // Date
+        TextView oDate = view.findViewById(R.id.oDate);
+        if(examen.date != null)
+            oDate.setText(""+examen.date.toString());
+        else
+            oDate.setText("Aucune date déterminée");
+
+        // Duree
+        TextView oDuree = view.findViewById(R.id.oDuree);
+        oDuree.setText("" + examen.dureeMinute);
 
         return view;
     }
