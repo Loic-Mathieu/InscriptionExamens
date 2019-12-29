@@ -379,6 +379,47 @@ public class ExamDB extends SQLiteOpenHelper {
         return false;
     }
 
+    public ArrayList<Integer> getAllRefExamInscritByUser(int refUtilisateur){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Integer> listeExamens = new ArrayList<>();
+
+        try
+        {
+            Cursor cursor = db.query(
+                    TABLE_UTIL_EXAM,
+                    new String[]{
+                            UTIL_EXAM_REFUTILISATEUR,
+                            UTIL_EXAM_REFEXAMEN,
+                    },
+                    UTIL_EXAM_REFUTILISATEUR + "=?",
+                    new String[]{String.valueOf(refUtilisateur)},
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                if(cursor.moveToFirst())
+                {
+                    // Add les références des examens dont un utilisateur est inscrit
+                    do {
+                        listeExamens.add(cursor.getInt(1));
+                    }
+                    while (cursor.moveToNext());
+                }
+            }
+
+            return listeExamens;
+        }
+        catch(Exception e){ e.printStackTrace(); }
+        finally { db.close(); }
+
+        return null;
+    }
+
     //********************************************************************************************
     //**************************** METHODES EXAMEN ******************************************
     //********************************************************************************************
@@ -421,6 +462,57 @@ public class ExamDB extends SQLiteOpenHelper {
                     },
                     EXAMEN_COURS + "=?",
                     new String[]{String.valueOf(refCours)},
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null)
+                cursor.moveToFirst();
+
+            Examen exam = new Examen(
+
+                    cursor.getInt(1),
+                    TypeExamen.valueOf(cursor.getString(2)), // String vers -> enum
+                    cursor.getString(3),
+                    cursor.getInt(5)
+            );
+
+            String str_d = cursor.getString(4);
+            LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+            //LocalDateTime date = LocalDateTime.parse(str_d);
+            exam.date = date;
+
+            System.out.println("COMOESTA : "+cursor.getInt(0));
+
+            exam.setId(cursor.getInt(0));
+            return exam;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            db.close();
+        }
+        return null;
+    }
+
+    //Récupérer un examen--------------------------------------------------------------------
+    public Examen getExamenByID(int refExamen) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try {
+            Cursor cursor = db.query(
+                    TABLE_EXAMEN,
+                    new String[]{
+                            EXAMEN_ID,
+                            EXAMEN_COURS,
+                            EXAMEN_TYPE,
+                            EXAMEN_DESCRIPTION,
+                            EXAMEN_DATE,
+                            EXAMEN_DUREE,
+                    },
+                    EXAMEN_ID + "=?",
+                    new String[]{String.valueOf(refExamen)},
                     null,
                     null,
                     null,
@@ -509,6 +601,33 @@ public class ExamDB extends SQLiteOpenHelper {
                     }
                     while (cursor.moveToNext());
                 }
+            }
+
+            return listeExamens;
+        }
+        catch(Exception e){ e.printStackTrace(); }
+        finally { db.close(); }
+
+        return null;
+    }
+
+
+    /**
+     * Récupères tous les examens de la db créés par le prof
+     * @return liste d'examens enregistrés dans la DB
+     */
+    public List<Examen> getAllExamenProf(String matricule)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try
+        {
+            Utilisateur prof = getUtilisateur(matricule);
+            ArrayList<String> listeDuProf = prof.getListeExamens();
+            ArrayList<Examen> listeExamens = new ArrayList<>();
+
+            for(int i = 0; i < listeDuProf.size(); i++){
+                listeExamens.add(getExamen(Integer.parseInt(listeDuProf.get(i))));
             }
 
             return listeExamens;
