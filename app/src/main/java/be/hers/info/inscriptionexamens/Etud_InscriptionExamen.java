@@ -13,10 +13,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Examen;
+import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Etud_InscriptionExamen extends AppCompatActivity
@@ -32,7 +34,13 @@ public class Etud_InscriptionExamen extends AppCompatActivity
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
         final String matricule = preferences.getString("MATRICULE", "VIDE");
 
-        customList.addAll(db.getAllExamenProf(matricule));
+        final ExamDB db = new ExamDB(this);
+        Utilisateur prof = db.getUtilisateur(matricule);
+
+        for (int id_exam : db.getAllRefExamInscritByUser(prof.getId()))
+        {
+            customList.add(db.getExamenByID(id_exam));
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

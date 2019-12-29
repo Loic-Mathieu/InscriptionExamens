@@ -176,7 +176,7 @@ public class Prof_ModifExamen extends AppCompatActivity
         {
             // Load exam
             final ExamDB db = new ExamDB(this);
-            examen = db.getExamen(id);
+            examen = db.getExamenByID(id);
         }
 
         initChamps();
