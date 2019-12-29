@@ -102,7 +102,7 @@ public class ExamDB extends SQLiteOpenHelper {
             +COURS_NOM + " String not null, "
             +COURS_ANNEE + " int not null, "
             +COURS_QUADRIMESTTRE +" int not null, "
-            +"CONSTRAINT unqCours UNIQUE ("+COURS_NOM+", "+COURS_ANNEE+", "+COURS_ANNEE+") );";
+            +"CONSTRAINT unqCours UNIQUE ("+COURS_NOM+", "+COURS_ANNEE+", "+COURS_QUADRIMESTTRE+") );";
     
     
     //Création de la DB---------------------------------------------------------------------------
