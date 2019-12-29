@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.util.Calendar;
 import android.os.Build;
+import android.renderscript.ScriptIntrinsicYuvToRGB;
 
 
 import androidx.annotation.RequiresApi;
@@ -696,30 +697,32 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Update Examen
-    public int updateExamen(Examen exam) {
+    public int updateExamen(int id_exam, Examen exam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
             ContentValues values = new ContentValues();
 
             values.put(EXAMEN_COURS, exam.refCours);
-            values.put(EXAMEN_TYPE, exam.typeExam.label);
+            values.put(EXAMEN_TYPE, exam.typeExam.toString());
             values.put(EXAMEN_DESCRIPTION, exam.description);
             values.put(EXAMEN_DATE, (exam.date).format(formatter));
             values.put(EXAMEN_DUREE, exam.dureeMinute);
 
-            return db.update(
+            int n = db.update(
                     TABLE_EXAMEN, values, EXAMEN_ID + " = ?",
                     new String[] {
-                            String.valueOf(exam.getId())
+                            String.valueOf(id_exam)
                     }
             );
+            return n;
+
         }catch(SQLException e){
             e.printStackTrace();
         }finally{
             db.close();
         }
-        return 0;
+        return -1;
     }
 
     /**
