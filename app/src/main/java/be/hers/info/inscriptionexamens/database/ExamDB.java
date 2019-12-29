@@ -443,7 +443,7 @@ public class ExamDB extends SQLiteOpenHelper {
 
 
             // Last id
-            String lastExam = "SELECT MAX(*) FROM " + TABLE_EXAMEN;
+            String lastExam = "SELECT MAX(_id) FROM " + TABLE_EXAMEN;
             Cursor cursor = db.rawQuery(lastExam, null);
             cursor.moveToFirst();
 
