@@ -242,6 +242,97 @@ public class ExamDB extends SQLiteOpenHelper {
         return null;
     }
 
+    //Récupérer un utilisateur--------------------------------------------------------------------
+    public Utilisateur getUtilisateurByID(int refUtilisateur) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try{
+            Cursor cursor = db.query(
+                    TABLE_UTILISATEUR,
+                    new String[] {
+                            UTILISATEUR_ID,
+                            UTILISATEUR_MATRICULE,
+                            UTILISATEUR_MDP,
+                            UTILISATEUR_PRENOM,
+                            UTILISATEUR_NOM,
+                            UTILISATEUR_ESTPROF,
+                            UTILISATEUR_LISTEEXAMENS
+                    },
+                    UTILISATEUR_ID + "=?",
+                    new String[] { String.valueOf(refUtilisateur) },
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+
+            Utilisateur utilisateur = new Utilisateur(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getInt(5) != 0
+            );
+
+            String str = cursor.getString(6);
+            String[] separation = str.split("|");
+            ArrayList<String> listeExam = new ArrayList<>();
+
+            for(int i=0; i < separation.length; i++){
+                listeExam.add(separation[i]);
+            }
+
+            System.out.println("ID USER ICI : "+utilisateur.getId());
+            utilisateur.setId(cursor.getInt(0));
+            return utilisateur;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return null;
+    }
+
+    //Update utilisateur
+    public int updateUtilisateur(Utilisateur utilisateur) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+            ContentValues values = new ContentValues();
+            StringBuilder str = new StringBuilder();
+            ArrayList<String> listeExam = utilisateur.getListeExamens();
+
+            for(int i=0; i<listeExam.size(); i++){
+                str.append(listeExam.get(i) + "|");
+            }
+
+            String resListe = str.toString();
+
+            values.put(UTILISATEUR_MATRICULE, utilisateur.getMatricule());
+            values.put(UTILISATEUR_MDP, utilisateur.getMdp());
+            values.put(UTILISATEUR_PRENOM, utilisateur.getPrenom());
+            values.put(UTILISATEUR_NOM, utilisateur.getNom());
+            values.put(UTILISATEUR_ESTPROF, utilisateur.getEstProf());
+            values.put(UTILISATEUR_LISTEEXAMENS, resListe);
+
+            return db.update(
+                    TABLE_UTILISATEUR, values, UTILISATEUR_ID + " = ?",
+                    new String[] {
+                            String.valueOf(utilisateur.getId())
+                    }
+            );
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{
+            db.close();
+        }
+        return 0;
+    }
+
     //Comparer MDP -------------------------------------------------------------------------------
     public Boolean comparerMDP(String matricule, String mdp){
 
@@ -426,6 +517,66 @@ public class ExamDB extends SQLiteOpenHelper {
         finally { db.close(); }
 
         return null;
+    }
+
+    /**
+     * Delete un examen de la db
+     */
+    public boolean deleteExam(int refExam) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+            ArrayList<Integer> listeEtudiants = new ArrayList<>();
+
+            Cursor cursor = db.query(
+                    TABLE_UTIL_EXAM,
+                    new String[]{
+                            UTIL_EXAM_REFUTILISATEUR
+                    },
+                    UTIL_EXAM_REFEXAMEN + "=?",
+                    new String[]{String.valueOf(refExam)},
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                if(cursor.moveToFirst())
+                {
+                    // Add les références des étudiants inscrits
+                    do {
+                        listeEtudiants.add(cursor.getInt(0));
+                    }
+                    while (cursor.moveToNext());
+                }
+
+                for(int i = 0; i < listeEtudiants.size(); i++){
+                    Utilisateur etudiant = getUtilisateurByID(listeEtudiants.get(i));
+                    ArrayList<String> listeExam = etudiant.getListeExamens();
+                    for(String el : listeExam){
+                        if(el.equals(refExam)){
+                            listeExam.remove(el);
+                        }
+                    }
+                    updateUtilisateur(etudiant);
+                }
+                db.delete(
+                        TABLE_EXAMEN, EXAMEN_ID + " = ?",
+                        new String[] {
+                                String.valueOf(refExam)
+                        }
+                );
+            }
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return false;
     }
 
     //********************************************************************************************
