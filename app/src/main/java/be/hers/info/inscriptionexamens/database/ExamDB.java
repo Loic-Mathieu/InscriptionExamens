@@ -31,7 +31,8 @@ public class ExamDB extends SQLiteOpenHelper {
     private final static String dbName = "ExamDB";
     private final static int dbVersion = 1;
 
-    private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    //private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     
     //Constructeur--------------------------------------------------------------------------------
     public ExamDB(Context context) {
@@ -298,7 +299,8 @@ public class ExamDB extends SQLiteOpenHelper {
 
             ContentValues values = new ContentValues();
             values.put(EXAMEN_COURS, exam.refCours);
-            values.put(EXAMEN_DATE, (exam.date).format(formatter));
+            //values.put(EXAMEN_DATE, (exam.date).format(formatter));
+            values.put(EXAMEN_DATE, formatter.format(exam.date));
             values.put(EXAMEN_TYPE, exam.typeExam.toString());
             values.put(EXAMEN_DESCRIPTION, exam.description);
             values.put(EXAMEN_DUREE, exam.dureeMinute);
@@ -346,7 +348,8 @@ public class ExamDB extends SQLiteOpenHelper {
             );
 
             String str_d = cursor.getString(4);
-            LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+            //LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+            LocalDateTime date = LocalDateTime.parse(str_d);
             exam.date = date;
 
             System.out.println("COMOESTA : "+cursor.getInt(0));
@@ -406,7 +409,8 @@ public class ExamDB extends SQLiteOpenHelper {
                         );
 
                         String str_d = cursor.getString(4);
-                        LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+                        //LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+                        LocalDateTime date = LocalDateTime.parse(str_d);
                         exam.date = date;
 
                         exam.setId(cursor.getInt(0));
