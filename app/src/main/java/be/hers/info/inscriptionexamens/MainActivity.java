@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 public class MainActivity extends AppCompatActivity
@@ -54,6 +55,14 @@ public class MainActivity extends AppCompatActivity
         db.addUtilisateur(bob);
         Utilisateur luke = new Utilisateur("E222222","222222","Luke","Skywalker",false);
         db.addUtilisateur(luke);
+
+        // Cours
+        Cours eco11 = new Cours("Eco", 1, 1);
+        db.addCours(eco11);
+        Cours eco12 = new Cours("Eco", 1, 2);
+        db.addCours(eco12);
+        Cours droit22 = new Cours("Droit", 2, 2);
+        db.addCours(droit22);
 
         System.out.println("DB CREE NORMALEMENT");
     }

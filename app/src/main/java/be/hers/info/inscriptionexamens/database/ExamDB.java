@@ -282,11 +282,7 @@ public class ExamDB extends SQLiteOpenHelper {
             return true;
         }
         catch(Exception e){ e.printStackTrace(); }
-        catch(Error error)
-        {
-            error.printStackTrace();
-            return false;
-        }
+        catch(Error error){ error.printStackTrace(); }
         finally{ db.close(); }
 
         return false;
@@ -295,7 +291,7 @@ public class ExamDB extends SQLiteOpenHelper {
     //********************************************************************************************
     //**************************** METHODES EXAMEN ******************************************
     //********************************************************************************************
-    //Ajouter un utilisateur-----------------------------------------------------------------------
+    //Ajouter un examen-----------------------------------------------------------------------
     public void addExamen(Examen exam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -352,8 +348,8 @@ public class ExamDB extends SQLiteOpenHelper {
             );
 
             String str_d = cursor.getString(4);
-            //LocalDateTime date = LocalDateTime.parse(str_d, formatter);
-            LocalDateTime date = LocalDateTime.parse(str_d);
+            LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+            //LocalDateTime date = LocalDateTime.parse(str_d);
             exam.date = date;
 
             System.out.println("COMOESTA : "+cursor.getInt(0));
@@ -455,7 +451,7 @@ public class ExamDB extends SQLiteOpenHelper {
 
     }
 
-    //Récupérer un utilisateur--------------------------------------------------------------------
+    //Récupérer un cours--------------------------------------------------------------------
     public Cours getCours(int refCours) {
         SQLiteDatabase db = this.getReadableDatabase();
 
