@@ -112,11 +112,15 @@ public class Prof_ModifExamen extends AppCompatActivity
         EditText iDuree = findViewById(R.id.iDuree);
         iDuree.setText(""+examen.dureeMinute);
 
+        /*
+
         // Calendar
         ZoneId zoneId = ZoneId.systemDefault();
         long l = examen.date.atZone(zoneId).toEpochSecond();
         CalendarView calendarView = findViewById(R.id.iDate);
         calendarView.setDate(l, true, true);
+
+         */
 
         // Time
         TimePicker timePicker = findViewById(R.id.iTime);
@@ -155,11 +159,11 @@ public class Prof_ModifExamen extends AppCompatActivity
 
         // Ajout dans la Db
         final ExamDB db = new ExamDB(this);
-        // db.addExamen(exam1); TODO PUT
+        int x = db.updateExamen(examen.getId(), exam1);
 
-        String output = "Examen Ajouté !"
-                + exam1.date.toString() + " "
-                + exam1.typeExam;
+        String output = "Examen Modifié !"
+                + exam1.getId() + " "
+                + x;
 
         Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
     }
@@ -176,7 +180,7 @@ public class Prof_ModifExamen extends AppCompatActivity
         {
             // Load exam
             final ExamDB db = new ExamDB(this);
-            examen = db.getExamen(id);
+            examen = db.getExamenByID(id);
         }
 
         initChamps();

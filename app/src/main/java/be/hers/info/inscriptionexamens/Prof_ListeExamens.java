@@ -12,8 +12,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
+import be.hers.info.inscriptionexamens.custom.AdapterListVew_ExamProf;
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
@@ -21,7 +22,7 @@ import be.hers.info.inscriptionexamens.model.Utilisateur;
 public class Prof_ListeExamens extends AppCompatActivity
 {
 
-    private AdapterListView_Examen customList;
+    private AdapterListVew_ExamProf customList;
 
     /**
      * Initialise la listView d'examens
@@ -36,10 +37,11 @@ public class Prof_ListeExamens extends AppCompatActivity
         final ExamDB db = new ExamDB(this);
         Utilisateur prof = db.getUtilisateur(matricule);
 
+        List<Examen> examens = new ArrayList<>();
         for (int id_exam : db.getAllRefExamInscritByUser(prof.getId()))
         {
-            System.out.println("ID EXAMEN "+id_exam);
-            customList.add(db.getExamen(id_exam));
+            System.out.println("ID EXAMEN DEMANDE "+id_exam);
+            customList.add(db.getExamenByID(id_exam));
         }
     }
 
@@ -51,7 +53,7 @@ public class Prof_ListeExamens extends AppCompatActivity
         setContentView(R.layout.prof_listeexamens);
 
         // Adapter la liste au model custom
-        this.customList = new AdapterListView_Examen(this, new ArrayList<Examen>());
+        this.customList = new AdapterListVew_ExamProf(this, new ArrayList<Examen>());
         ListView listView = findViewById(R.id.customListExams);
         listView.setAdapter(customList);
 

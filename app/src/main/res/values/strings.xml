@@ -19,4 +19,6 @@
     <string name="oListeExamens">Liste des examens</string>
     <string name="bSupprimer">Supprimer</string>
     <string name="bValider">Valider</string>
+    <string name="bListeEtudiants">Liste d\'étudiants</string>
+    <string name="bModifier">Modifier</string>
 </resources>

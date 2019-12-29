@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.util.Calendar;
 import android.os.Build;
+import android.renderscript.ScriptIntrinsicYuvToRGB;
 
 
 import androidx.annotation.RequiresApi;
@@ -379,6 +380,47 @@ public class ExamDB extends SQLiteOpenHelper {
         return false;
     }
 
+    public boolean desinscrireUtilisateurAExamen(String matricule, int id_exam) {
+
+        Utilisateur x = getUtilisateur(matricule);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+
+            Cursor cursor = db.query(
+                    TABLE_UTIL_EXAM,
+                    new String[]{
+                            UTIL_EXAM_REFUTILISATEUR,
+                            UTIL_EXAM_REFEXAMEN
+                    },
+                    UTIL_EXAM_REFUTILISATEUR + "=? AND " + UTIL_EXAM_REFEXAMEN + "=?",
+                    new String[]{String.valueOf(x.getId()), String.valueOf(id_exam)},
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                db.delete(
+                        TABLE_UTIL_EXAM, UTIL_EXAM_REFUTILISATEUR + "=? AND " + UTIL_EXAM_REFEXAMEN + "=?",
+                        new String[] {
+                                String.valueOf(x.getId()), String.valueOf(id_exam),
+                        }
+                );
+            }
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return false;
+    }
+
     public ArrayList<Integer> getAllRefExamInscritByUser(int refUtilisateur){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Integer> listeExamens = new ArrayList<>();
@@ -457,57 +499,6 @@ public class ExamDB extends SQLiteOpenHelper {
 
         // id
         return n;
-    }
-
-    //Récupérer un examen--------------------------------------------------------------------
-    public Examen getExamen(int refCours) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        try {
-            Cursor cursor = db.query(
-                    TABLE_EXAMEN,
-                    new String[]{
-                            EXAMEN_ID,
-                            EXAMEN_COURS,
-                            EXAMEN_TYPE,
-                            EXAMEN_DESCRIPTION,
-                            EXAMEN_DATE,
-                            EXAMEN_DUREE,
-                    },
-                    EXAMEN_COURS + "=?",
-                    new String[]{String.valueOf(refCours)},
-                    null,
-                    null,
-                    null,
-                    null
-            );
-
-            if (cursor != null)
-                cursor.moveToFirst();
-
-            Examen exam = new Examen(
-
-                    cursor.getInt(1),
-                    TypeExamen.valueOf(cursor.getString(2)), // String vers -> enum
-                    cursor.getString(3),
-                    cursor.getInt(5)
-            );
-
-            String str_d = cursor.getString(4);
-            LocalDateTime date = LocalDateTime.parse(str_d, formatter);
-            //LocalDateTime date = LocalDateTime.parse(str_d);
-            exam.date = date;
-
-            System.out.println("COMOESTA : "+cursor.getInt(0));
-
-            exam.setId(cursor.getInt(0));
-            return exam;
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            db.close();
-        }
-        return null;
     }
 
     //Récupérer un examen--------------------------------------------------------------------
@@ -693,7 +684,7 @@ public class ExamDB extends SQLiteOpenHelper {
                 {
                     // Add les références des examens dont un utilisateur est inscrit
                     do {
-                        listeExamens.add(getExamen(cursor.getInt(1)));
+                        listeExamens.add(getExamenByID(cursor.getInt(1)));
                     }
                     while (cursor.moveToNext());
                 }
@@ -708,30 +699,32 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Update Examen
-    public int updateExamen(Examen exam) {
+    public int updateExamen(int id_exam, Examen exam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
             ContentValues values = new ContentValues();
 
             values.put(EXAMEN_COURS, exam.refCours);
-            values.put(EXAMEN_TYPE, exam.typeExam.label);
+            values.put(EXAMEN_TYPE, exam.typeExam.toString());
             values.put(EXAMEN_DESCRIPTION, exam.description);
             values.put(EXAMEN_DATE, (exam.date).format(formatter));
             values.put(EXAMEN_DUREE, exam.dureeMinute);
 
-            return db.update(
+            int n = db.update(
                     TABLE_EXAMEN, values, EXAMEN_ID + " = ?",
                     new String[] {
-                            String.valueOf(exam.getId())
+                            String.valueOf(id_exam)
                     }
             );
+            return n;
+
         }catch(SQLException e){
             e.printStackTrace();
         }finally{
             db.close();
         }
-        return 0;
+        return -1;
     }
 
     /**

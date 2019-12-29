@@ -1,27 +1,25 @@
 package be.hers.info.inscriptionexamens.custom;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import be.hers.info.inscriptionexamens.Prof_ModifExamen;
 import be.hers.info.inscriptionexamens.R;
 import be.hers.info.inscriptionexamens.model.Examen;
 
-public class AdapterListView_Examen extends ArrayAdapter<Examen>
+public class AdapterListVew_ExamProf extends ArrayAdapter<Examen>
 {
-    // Checkboxes
-    private ArrayList<Integer> selectedIds = new ArrayList<>();
-
-    public AdapterListView_Examen(Context context, ArrayList<Examen> examens)
+    public AdapterListVew_ExamProf(Context context, ArrayList<Examen> examens)
     {
-        super(context, R.layout.examen, examens);
+        super(context, R.layout.examen_prof, examens);
     }
 
     @Override
@@ -34,7 +32,7 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
         if(view == null)
         {
             view = LayoutInflater.from(getContext())
-                                .inflate(R.layout.examen, parent,false);
+                    .inflate(R.layout.examen_prof, parent,false);
         }
 
         // Nom du cours
@@ -58,29 +56,30 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
         TextView oDuree = view.findViewById(R.id.oDuree);
         oDuree.setText("" + examen.dureeMinute);
 
-
-        CheckBox checkBox = view.findViewById(R.id.iChoix);
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        // Page de modification
+        Button bChange_pModif = view.findViewById(R.id.bModifier);
+        bChange_pModif.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onClick(View v)
             {
-                if(isChecked)
-                    selectedIds.add(examen.getId());
-                else
-                    selectedIds.remove(examen.getId());
+                Intent intent = new Intent(getContext(), Prof_ModifExamen.class);
+                intent.putExtra("ID_EXAM", examen.getId());
+                getContext().startActivity(intent);
+            }
+        });
+
+        // Page lister étudiants
+        Button bChange_pListeEtud = view.findViewById(R.id.bListeEtudiants);
+        bChange_pListeEtud.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
             }
         });
 
         return view;
-    }
-
-    /**
-     * Accès à la liste des id des examens sélectionnés
-     * @return Liste d'ID d'examens dans la DB
-     */
-    public ArrayList<Integer> getSelectedIds()
-    {
-        return selectedIds;
     }
 }
