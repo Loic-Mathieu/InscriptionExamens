@@ -625,6 +625,37 @@ public class ExamDB extends SQLiteOpenHelper {
         return null;
     }
 
+    public List<Examen> getAllExamenByListeAnnee(List<Integer> listeID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Examen> listeExamens;
+        ArrayList<Examen> listeRes = new ArrayList<>();
+
+        try
+        {
+            listeExamens = getAllExamen();
+            //Pour chaque élément de la liste d'examens
+            for(int i = 0; i < listeExamens.size() ; i++){
+                //On récupère le cours
+                Cours c = getCours(listeExamens.get(i).refCours);
+                //Pour chaque élément de la liste d'ID
+                for(int j = 0; j < listeID.size(); j++){
+                    //On check s'il est égal à l'année du cours
+                    if(c.getAnnee() == listeID.get(j)){
+                        //Si oui, on ajoute l'examen à la liste finale
+                        listeRes.add(getExamenByID(listeID.get(i)));
+                    }
+                }
+            }
+            //retourne la liste finale
+            return listeRes;
+        }
+        catch(Exception e){ e.printStackTrace(); }
+        finally { db.close(); }
+
+        return null;
+    }
+
 
     /**
      * Récupères tous les examens de la db créés par le prof
