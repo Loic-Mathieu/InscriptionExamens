@@ -20,11 +20,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.TypeExamen;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class Prof_AjouterExamen extends AppCompatActivity
 {
     private LocalDate curDate;
@@ -57,6 +60,25 @@ public class Prof_AjouterExamen extends AppCompatActivity
     private void initSpinnerCours()
     {
         // TODO
+
+        Spinner spinner = findViewById(R.id.iCours);
+
+        // Adapt
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                R.layout.support_simple_spinner_dropdown_item
+        );
+        spinner.setAdapter(adapter);
+
+        final ExamDB db = new ExamDB(this);
+
+        ArrayList<Cours> listCours = db.getAllCours();
+
+        // ajout des cours
+        for(Cours c : listCours)
+        {
+            adapter.add(c.toString());
+        }
     }
 
 
@@ -97,6 +119,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prof_ajoutexamen);
 
+        initSpinnerCours();
         initSpinnerTypeExam();
 
         // Changement de Date

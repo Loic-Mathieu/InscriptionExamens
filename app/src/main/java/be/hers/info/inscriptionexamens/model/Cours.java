@@ -23,6 +23,12 @@ public class Cours {
         this.quadrimestre = quadrimestre;
     }
 
+    public Cours(String nom, int annee, int quadrimestre) {
+        this.nom = nom;
+        this.annee = annee;
+        this.quadrimestre = quadrimestre;
+    }
+
     public int getId() {
         return id;
     }
@@ -53,5 +59,9 @@ public class Cours {
 
     public void setQuadrimestre(int quadrimestre) {
         this.quadrimestre = quadrimestre;
+    }
+
+    public String toString(){
+        return (getNom() + " - Bloc " + getAnnee() + " - Q" + getQuadrimestre());
     }
 }
