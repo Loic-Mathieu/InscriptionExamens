@@ -32,7 +32,7 @@ public class Etud_InscriptionExamen extends AppCompatActivity
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
         final String matricule = preferences.getString("MATRICULE", "VIDE");
 
-        customList.addAll(db.getAllExamenProf(matricule));
+        customList.addAll(db.getAllExamen());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

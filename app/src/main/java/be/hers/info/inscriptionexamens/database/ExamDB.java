@@ -379,6 +379,47 @@ public class ExamDB extends SQLiteOpenHelper {
         return false;
     }
 
+    public boolean desinscrireUtilisateurAExamen(String matricule, int id_exam) {
+
+        Utilisateur x = getUtilisateur(matricule);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+
+            Cursor cursor = db.query(
+                    TABLE_UTIL_EXAM,
+                    new String[]{
+                            UTIL_EXAM_REFUTILISATEUR,
+                            UTIL_EXAM_REFEXAMEN
+                    },
+                    UTIL_EXAM_REFUTILISATEUR + "=? AND " + UTIL_EXAM_REFEXAMEN + "=?",
+                    new String[]{String.valueOf(x.getId()), String.valueOf(id_exam)},
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                db.delete(
+                        TABLE_UTIL_EXAM, UTIL_EXAM_REFUTILISATEUR + "=? AND " + UTIL_EXAM_REFEXAMEN + "=?",
+                        new String[] {
+                                String.valueOf(x.getId()), String.valueOf(id_exam),
+                        }
+                );
+            }
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return false;
+    }
+
     public ArrayList<Integer> getAllRefExamInscritByUser(int refUtilisateur){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Integer> listeExamens = new ArrayList<>();
