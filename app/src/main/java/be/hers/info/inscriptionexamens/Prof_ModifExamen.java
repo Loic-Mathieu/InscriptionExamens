@@ -1,5 +1,6 @@
 package be.hers.info.inscriptionexamens;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -16,11 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
@@ -28,11 +28,23 @@ import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.TypeExamen;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
-public class Prof_AjouterExamen extends AppCompatActivity
+public class Prof_ModifExamen extends AppCompatActivity
 {
     private LocalDate curDate;
     private LocalTime curTime;
+
+    private Examen examen = new Examen();
+    private int id;
+
+    public void getId()
+    {
+        Bundle extra = this.getIntent().getExtras();
+
+        if(extra != null)
+            this.id = extra.getInt("ID_EXAM");
+        else
+            this.id = -1;
+    }
 
     /**
      * initialise le spinner des types d'examens
@@ -53,11 +65,16 @@ public class Prof_AjouterExamen extends AppCompatActivity
         {
             adapter.add(t.toString());
         }
+
+        // Type choisit
+        int position = adapter.getPosition(examen.typeExam.toString());
+        spinner.setSelection(position);
     }
 
     /**
      *
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initSpinnerCours()
     {
         Spinner spinner = findViewById(R.id.iCours);
@@ -78,8 +95,40 @@ public class Prof_AjouterExamen extends AppCompatActivity
         {
             adapter.add(c.toString());
         }
+
+        // Cours choisit
+        Cours selected = db.getCours(examen.refCours);
+        // int position = adapter.getPosition(selected.toString());
+        // spinner.setSelection(position);
     }
 
+    /**
+     *
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void initChamps()
+    {
+        EditText iDescription = findViewById(R.id.iDescription);
+        iDescription.setText(examen.description);
+
+        EditText iDuree = findViewById(R.id.iDuree);
+        iDuree.setText(""+examen.dureeMinute);
+
+        /*
+        // Calendar
+        ZonedDateTime zonedDateTime = examen.date.atZone(ZoneId.of("France/Paris"));
+        long l = zonedDateTime.toInstant().toEpochMilli();
+        CalendarView calendarView = findViewById(R.id.iDate);
+        calendarView.setDate(l, true, true);*/
+
+        // Time
+        TimePicker timePicker = findViewById(R.id.iTime);
+        timePicker.setHour(examen.date.getHour());
+        timePicker.setMinute(examen.date.getMinute());
+
+        curDate = examen.date.toLocalDate();
+        curTime = examen.date.toLocalTime();
+    }
 
     /**
      * Créé un objet
@@ -109,7 +158,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
 
         // Ajout dans la Db
         final ExamDB db = new ExamDB(this);
-        db.addExamen(exam1);
+        // db.addExamen(exam1); TODO PUT
 
         String output = "Examen Ajouté !"
                 + exam1.date.toString() + " "
@@ -118,14 +167,26 @@ public class Prof_AjouterExamen extends AppCompatActivity
         Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prof_ajoutexamen);
 
-        initSpinnerCours();
+        getId();
+        if(id > 0)
+        {
+            // Load exam
+            final ExamDB db = new ExamDB(this);
+            examen = db.getExamen(id);
+        }
+
+        initChamps();
+
+        // Spinners
         initSpinnerTypeExam();
+        initSpinnerCours();
 
         // Changement de Date
         CalendarView calendarView = findViewById(R.id.iDate);

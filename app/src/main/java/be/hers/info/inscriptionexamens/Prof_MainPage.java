@@ -46,5 +46,17 @@ public class Prof_MainPage extends AppCompatActivity
                     }
                 }
         );
+
+        Button foo = findViewById(R.id.buttonTest);
+        foo.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(getApplicationContext(), Prof_ModifExamen.class);
+                intent.putExtra("ID_EXAM", 1);
+                startActivity(intent);
+            }
+        });
     }
 }
