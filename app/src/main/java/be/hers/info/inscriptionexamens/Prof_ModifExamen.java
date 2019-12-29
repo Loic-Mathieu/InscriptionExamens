@@ -1,6 +1,5 @@
 package be.hers.info.inscriptionexamens;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
@@ -98,12 +96,12 @@ public class Prof_ModifExamen extends AppCompatActivity
 
         // Cours choisit
         Cours selected = db.getCours(examen.refCours);
-        // int position = adapter.getPosition(selected.toString());
-        // spinner.setSelection(position);
+        int position = adapter.getPosition(selected.toString());
+        spinner.setSelection(position);
     }
 
     /**
-     *
+     * initialise les champs
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initChamps()
@@ -114,12 +112,11 @@ public class Prof_ModifExamen extends AppCompatActivity
         EditText iDuree = findViewById(R.id.iDuree);
         iDuree.setText(""+examen.dureeMinute);
 
-        /*
         // Calendar
-        ZonedDateTime zonedDateTime = examen.date.atZone(ZoneId.of("France/Paris"));
-        long l = zonedDateTime.toInstant().toEpochMilli();
+        ZoneId zoneId = ZoneId.systemDefault();
+        long l = examen.date.atZone(zoneId).toEpochSecond();
         CalendarView calendarView = findViewById(R.id.iDate);
-        calendarView.setDate(l, true, true);*/
+        calendarView.setDate(l, true, true);
 
         // Time
         TimePicker timePicker = findViewById(R.id.iTime);
