@@ -1,6 +1,8 @@
 package be.hers.info.inscriptionexamens;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +18,11 @@ public class Etud_MainPage extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etud_mainpage);
 
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        String s = preferences.getString("MATRICULE", "VIDE");
+
         // Toast
-        Toast.makeText(Etud_MainPage.this, "Page Etud !", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Etud_MainPage.this, ("Page Etud !" + s), Toast.LENGTH_SHORT).show();
 
         // Page d'inscription
         Button changePage_inscription = findViewById(R.id.bChange_pInscription);
