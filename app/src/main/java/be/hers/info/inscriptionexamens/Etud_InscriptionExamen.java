@@ -17,6 +17,7 @@ import java.util.List;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.database.FonctionsUtiles;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
@@ -41,6 +42,10 @@ public class Etud_InscriptionExamen extends AppCompatActivity
         {
             customList.add(db.getExamenByID(id_exam));
         }
+
+        // TEMP
+        List<Examen> examens = db.getAllExamen();
+        customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "ANT"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

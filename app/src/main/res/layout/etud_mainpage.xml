@@ -15,13 +15,6 @@
         android:layout_height="59dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/inscription" />
-
         <Button
             android:id="@+id/bChange_pInscription"
             android:layout_width="wrap_content"
@@ -34,13 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="63dp"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/desinscription" />
 
         <Button
             android:id="@+id/bChange_pDesinscription"

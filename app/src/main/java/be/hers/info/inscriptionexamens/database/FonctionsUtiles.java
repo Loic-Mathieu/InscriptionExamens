@@ -14,7 +14,7 @@ public class FonctionsUtiles {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public List<Examen> getAllExamAnterieurs(List<Examen> listeExams, String s)
+    public static List<Examen> getAllExamAnterieurs(List<Examen> listeExams, String s)
     {
         ArrayList<Examen> listeRes = new ArrayList<>();
 
