@@ -76,6 +76,17 @@ public class ExamDB extends SQLiteOpenHelper {
             +EXAMEN_DATE + " date not null, "
             +EXAMEN_DUREE +" int not null);";
 
+    // Table Jointure----------------------------------------------------------------------------
+    private static final String TABLE_UTIL_EXAM = "utilisateur_examen";
+    private static final String UTIL_EXAM_REFEXAMEN = "refexamen";
+    private static final String UTIL_EXAM_REFUTILISATEUR = "refutilisateur";
+
+    private static final String CREATE_TABLE_UTILISATEUR_EXAM = "create table " + TABLE_UTIL_EXAM + " ("
+            + "_id integer primary key autoincrement, "
+            + UTIL_EXAM_REFUTILISATEUR + " integer not null, "
+            + UTIL_EXAM_REFEXAMEN + " integer not null, "
+            + "CONSTRAINT unqInscr UNIQUE ("+UTIL_EXAM_REFUTILISATEUR+", "+UTIL_EXAM_REFEXAMEN+")"
+            + " );";
 
     //Table Cours----------------------------------------------------------------------------
     private static final String TABLE_COURS = "cours";
@@ -90,32 +101,21 @@ public class ExamDB extends SQLiteOpenHelper {
             +COURS_NOM + " String not null, "
             +COURS_ANNEE + " int not null, "
             +COURS_QUADRIMESTTRE +" int not null, "
-            +"CONSTRAINT unq UNIQUE ("+COURS_NOM+", "+COURS_ANNEE+", "+COURS_ANNEE+") );";
+            +"CONSTRAINT unqCours UNIQUE ("+COURS_NOM+", "+COURS_ANNEE+", "+COURS_ANNEE+") );";
     
     
     //Création de la DB---------------------------------------------------------------------------
     @Override
     public void onCreate(SQLiteDatabase db) {
-        try{
+        try
+        {
             db.execSQL(CREATE_TABLE_UTILISATEUR);
             db.execSQL(CREATE_TABLE_EXAMEN);
             db.execSQL(CREATE_TABLE_COURS);
+            db.execSQL(CREATE_TABLE_UTILISATEUR_EXAM);
 
-            // Enseignants
-            Utilisateur cedric = new Utilisateur("H111111","111111","Cédric","Peeters",true);
-            addUtilisateur(cedric);
-            Utilisateur joram = new Utilisateur("H222222","222222","Joram","Mushymiyimana",true);
-            addUtilisateur(joram);
-
-            // Eleves
-            Utilisateur bob = new Utilisateur("E111111","111111","Bob","Lennon",false);
-            addUtilisateur(bob);
-            Utilisateur luke = new Utilisateur("E222222","222222","Luke","Skywalker",false);
-            addUtilisateur(luke);
-
-        }catch(SQLException e) {
-            e.printStackTrace();
         }
+        catch(SQLException e) { e.printStackTrace(); }
 
         System.out.println("Created");
     }
@@ -126,6 +126,30 @@ public class ExamDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_UTILISATEUR+";");
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_EXAMEN+";");
         onCreate(db);
+    }
+
+    /**
+     * Check if the database exist and can be read.
+     * @return true if it exists and can be read, false if it doesn't
+     */
+    public boolean checkDataBase()
+    {
+        SQLiteDatabase checkDB = getWritableDatabase();
+        int n = -1;
+        try
+        {
+            String count = "SELECT count(*) FROM " + TABLE_UTILISATEUR;
+            Cursor cursor = checkDB.rawQuery(count, null);
+            cursor.moveToFirst();
+
+            n = cursor.getInt(0);
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            checkDB.close();
+        }
+        return (n > 0);
     }
 
     //********************************************************************************************
@@ -236,6 +260,28 @@ public class ExamDB extends SQLiteOpenHelper {
         if(x.getEstProf()){
             return true;
         }
+        return false;
+    }
+
+    public Boolean inscrireEleveAExamen(String matricule, int id_exam)
+    {
+        Utilisateur x = getUtilisateur(matricule);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        try
+        {
+            ContentValues values = new ContentValues();
+            values.put(UTIL_EXAM_REFUTILISATEUR, x.getId());
+            values.put(UTIL_EXAM_REFEXAMEN, id_exam);
+            
+            db.insert(TABLE_UTIL_EXAM, null, values);
+
+            // Si aucune contraintes
+            return true;
+        }
+        catch(Exception e){ e.printStackTrace(); }
+        finally{ db.close(); }
+
         return false;
     }
 

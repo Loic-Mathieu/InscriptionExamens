@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -29,12 +30,42 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    /**
+     * Initialise la DB si besoin
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void initDB()
+    {
+        //On crée la DB
+        final ExamDB db = new ExamDB(this);
+
+        if(db.checkDataBase())
+            return;
+
+        // Enseignants
+        Utilisateur cedric = new Utilisateur("H111111","111111","Cédric","Peeters",true);
+        db.addUtilisateur(cedric);
+        Utilisateur joram = new Utilisateur("H222222","222222","Joram","Mushymiyimana",true);
+        db.addUtilisateur(joram);
+
+        // Eleves
+        Utilisateur bob = new Utilisateur("E111111","111111","Bob","Lennon",false);
+        db.addUtilisateur(bob);
+        Utilisateur luke = new Utilisateur("E222222","222222","Luke","Skywalker",false);
+        db.addUtilisateur(luke);
+
+        System.out.println("DB CREE NORMALEMENT");
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialise la DB si besoin
+        initDB();
 
         //On crée la DB
         final ExamDB db = new ExamDB(this);
