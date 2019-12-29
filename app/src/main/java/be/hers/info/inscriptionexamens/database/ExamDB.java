@@ -616,7 +616,7 @@ public class ExamDB extends SQLiteOpenHelper {
                     while (cursor.moveToNext());
                 }
 
-                for(int i = 0; i < listeEtudiants.size(); i++){
+                for(int i = 0; i < listeUtilisateurs.size(); i++){
                     Utilisateur utilisateur = getUtilisateurByID(listeUtilisateurs.get(i));
                     if(!utilisateur.getEstProf()){
                         listeEtudiants.add(utilisateur.getId());
