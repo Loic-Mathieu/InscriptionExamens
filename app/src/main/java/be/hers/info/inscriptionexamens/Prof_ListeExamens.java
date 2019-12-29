@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Examen;
+import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 public class Prof_ListeExamens extends AppCompatActivity
 {
@@ -33,7 +34,13 @@ public class Prof_ListeExamens extends AppCompatActivity
         final String matricule = preferences.getString("MATRICULE", "VIDE");
 
         final ExamDB db = new ExamDB(this);
-        customList.addAll(db.getAllExamenProf(matricule));
+        Utilisateur prof = db.getUtilisateur(matricule);
+
+        for (int id_exam : db.getAllRefExamInscritByUser(prof.getId()))
+        {
+            System.out.println("ID EXAMEN "+id_exam);
+            customList.add(db.getExamen(id_exam));
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

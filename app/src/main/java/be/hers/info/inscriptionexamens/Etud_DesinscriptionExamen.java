@@ -29,21 +29,6 @@ public class Etud_DesinscriptionExamen extends AppCompatActivity
      */
     private void initList(ArrayList<Integer> listeRefExam)
     {
-        // TODO from DB
-        /*customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());*/
-
         //Recup la liste des examens
         ArrayList<Examen> listeExam = new ArrayList<Examen>();
         for (int id_exam : listeRefExam)
