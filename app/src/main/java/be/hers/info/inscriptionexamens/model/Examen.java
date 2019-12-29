@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Examen
 {
-    public int id;
+    int id;
     public int refCours;
 
     public TypeExamen typeExam;
@@ -39,4 +39,10 @@ public class Examen
     }
 
     public void setId(int i){this.id = i;}
+
+    public int getId()
+    {
+        return id;
+    }
+
 }

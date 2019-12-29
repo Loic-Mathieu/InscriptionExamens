@@ -48,39 +48,14 @@ public class MainActivity extends AppCompatActivity
         //On crée la DB
         final ExamDB db = new ExamDB(this);
         Utilisateur cedric = new Utilisateur("H111111","111111","Cédric","Peeters",true);
-        db.addUtilisateur(cedric);
+        // db.addUtilisateur(cedric);
         Utilisateur joram = new Utilisateur("H222222","222222","Joram","Mushymiyimana",true);
-        db.addUtilisateur(joram);
+        // db.addUtilisateur(joram);
         Utilisateur bob = new Utilisateur("E111111","111111","Bob","Lennon",false);
-        db.addUtilisateur(bob);
+        // db.addUtilisateur(bob);
         Utilisateur luke = new Utilisateur("E222222","222222","Luke","Skywalker",false);
-        db.addUtilisateur(luke);
+        // db.addUtilisateur(luke);
         //System.out.println("Matricule : "+cedric.getMatricule() + "/ Nom : " + cedric.getNom());
-
-        //J'ajoute deux examens just pr tester
-        LocalDateTime date1 = LocalDateTime.of(2019, 12, 27, 12, 30);
-        Examen exam1 = new Examen(1,TypeExamen.EcritPc,"blabla", date1 ,60);
-        LocalDateTime date2 = LocalDateTime.of(2019, 12, 27, 12, 30);
-        Examen exam2 = new Examen(2, TypeExamen.Oral,"blabla2", date2 ,20);
-
-        db.addExamen(exam1);
-        db.addExamen(exam2);
-
-        Examen test = db.getExamen(1);
-
-        TextView textView = findViewById(R.id.titreConnexion);
-        textView.setText(""+test.id);
-
-
-        //PROBLEME ID.................
-        System.out.println("IDEXAMS : "+exam1.id+" "+exam2.id);
-
-        luke.addToList(Integer.toString(exam1.id));
-        luke.addToList(Integer.toString(exam2.id));
-        //-----
-        //Je try récup
-        System.out.println("LISTE EXAM : " +luke.getListeExamens());
-        System.out.println(db.getExamen(2));
 
         // Boutton connexion
         Button button = findViewById(R.id.bConnect);

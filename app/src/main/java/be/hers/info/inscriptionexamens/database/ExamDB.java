@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
@@ -29,9 +30,6 @@ public class ExamDB extends SQLiteOpenHelper {
     //Info DB-------------------------------------------------------------------------------------
     private final static String dbName = "ExamDB";
     private final static int dbVersion = 1;
-
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private final static SimpleDateFormat heureFormat = new SimpleDateFormat("HH:mm:ss");
 
     private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     
@@ -193,6 +191,8 @@ public class ExamDB extends SQLiteOpenHelper {
                 listeExam.add(separation[i]);
             }
 
+            System.out.println("ID USER ICI : "+utilisateur.getId());
+            utilisateur.setId(cursor.getInt(0));
             return utilisateur;
 
         }catch(Exception e){
@@ -287,16 +287,73 @@ public class ExamDB extends SQLiteOpenHelper {
             LocalDateTime date = LocalDateTime.parse(str_d, formatter);
             exam.date = date;
 
-            System.out.println("COMOESTA : "+exam.date);
+            System.out.println("COMOESTA : "+cursor.getInt(0));
 
-
-
+            exam.setId(cursor.getInt(0));
             return exam;
         }catch(Exception e){
             e.printStackTrace();
         }finally{
             db.close();
         }
+        return null;
+    }
+
+    /**
+     * Récupères tous les examens de la db
+     * @return liste d'examens enregistrés dans la DB
+     */
+    public List<Examen> getAllExamen()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Examen> listeExamens = new ArrayList<>();
+
+        try
+        {
+            Cursor cursor = db.query(
+                    TABLE_EXAMEN,
+                    new String[]{
+                            EXAMEN_ID,
+                            EXAMEN_COURS,
+                            EXAMEN_TYPE,
+                            EXAMEN_DESCRIPTION,
+                            EXAMEN_DATE,
+                            EXAMEN_DUREE,
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                if(cursor.moveToFirst())
+                {
+                    // Add all examens
+                    do {
+                        Examen exam = new Examen
+                        (
+                            cursor.getInt(1),
+                            TypeExamen.valueOf(cursor.getString(2)),
+                            cursor.getString(3),
+                            cursor.getInt(5)
+                        );
+                        exam.setId(cursor.getInt(0));
+                        listeExamens.add(exam);
+                    }
+                    while (cursor.moveToNext());
+                }
+            }
+
+            return listeExamens;
+        }
+        catch(Exception e){ e.printStackTrace(); }
+        finally { db.close(); }
+
         return null;
     }
 
