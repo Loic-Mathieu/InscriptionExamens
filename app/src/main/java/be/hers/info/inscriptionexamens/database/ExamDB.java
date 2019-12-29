@@ -675,31 +675,22 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Update Examen
-    public int updateExamen(Utilisateur utilisateur) {
+    public int updateExamen(Examen exam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
             ContentValues values = new ContentValues();
-            StringBuilder str = new StringBuilder();
-            ArrayList<String> listeExam = utilisateur.getListeExamens();
 
-            for(int i=0; i<listeExam.size(); i++){
-                str.append(listeExam.get(i) + "|");
-            }
-
-            String resListe = str.toString();
-
-            values.put(UTILISATEUR_MATRICULE, utilisateur.getMatricule());
-            values.put(UTILISATEUR_MDP, utilisateur.getMdp());
-            values.put(UTILISATEUR_PRENOM, utilisateur.getPrenom());
-            values.put(UTILISATEUR_NOM, utilisateur.getNom());
-            values.put(UTILISATEUR_ESTPROF, utilisateur.getEstProf());
-            values.put(UTILISATEUR_LISTEEXAMENS, resListe);
+            values.put(EXAMEN_COURS, exam.refCours);
+            values.put(EXAMEN_TYPE, exam.typeExam.label);
+            values.put(EXAMEN_DESCRIPTION, exam.description);
+            values.put(EXAMEN_DATE, (exam.date).format(formatter));
+            values.put(EXAMEN_DUREE, exam.dureeMinute);
 
             return db.update(
-                    TABLE_UTILISATEUR, values, UTILISATEUR_ID + " = ?",
+                    TABLE_EXAMEN, values, EXAMEN_ID + " = ?",
                     new String[] {
-                            String.valueOf(utilisateur.getId())
+                            String.valueOf(exam.getId())
                     }
             );
         }catch(SQLException e){
