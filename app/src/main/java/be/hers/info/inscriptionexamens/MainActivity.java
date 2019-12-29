@@ -47,15 +47,6 @@ public class MainActivity extends AppCompatActivity
 
         //On crée la DB
         final ExamDB db = new ExamDB(this);
-        Utilisateur cedric = new Utilisateur("H111111","111111","Cédric","Peeters",true);
-        // db.addUtilisateur(cedric);
-        Utilisateur joram = new Utilisateur("H222222","222222","Joram","Mushymiyimana",true);
-        // db.addUtilisateur(joram);
-        Utilisateur bob = new Utilisateur("E111111","111111","Bob","Lennon",false);
-        // db.addUtilisateur(bob);
-        Utilisateur luke = new Utilisateur("E222222","222222","Luke","Skywalker",false);
-        // db.addUtilisateur(luke);
-        //System.out.println("Matricule : "+cedric.getMatricule() + "/ Nom : " + cedric.getNom());
 
         // Boutton connexion
         Button button = findViewById(R.id.bConnect);

@@ -1,15 +1,19 @@
 package be.hers.info.inscriptionexamens;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
+import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Examen;
 
 public class Etud_InscriptionExamen extends AppCompatActivity
@@ -19,24 +23,14 @@ public class Etud_InscriptionExamen extends AppCompatActivity
     /**
      * Initialise la listView d'examens
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initList()
     {
-        // TODO from DB
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
-        customList.add(new Examen());
+        final ExamDB db = new ExamDB(this);
+        customList.addAll(db.getAllExamen());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -58,7 +52,8 @@ public class Etud_InscriptionExamen extends AppCompatActivity
                 {
                     public void onClick(View v)
                     {
-                        // TODO s'inscrire aux cours
+                        ArrayList<Integer> list = customList.getSelectedIds();
+                        System.out.println("NOMBRE SELECTION " + list.size());
                     }
                 }
         );

@@ -89,7 +89,8 @@ public class ExamDB extends SQLiteOpenHelper {
             +COURS_ID + " integer primary key autoincrement, "
             +COURS_NOM + " String not null, "
             +COURS_ANNEE + " int not null, "
-            +COURS_QUADRIMESTTRE +" int not null);";
+            +COURS_QUADRIMESTTRE +" int not null, "
+            +"CONSTRAINT unq UNIQUE ("+COURS_NOM+", "+COURS_ANNEE+", "+COURS_ANNEE+") );";
     
     
     //Création de la DB---------------------------------------------------------------------------
@@ -99,6 +100,19 @@ public class ExamDB extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_UTILISATEUR);
             db.execSQL(CREATE_TABLE_EXAMEN);
             db.execSQL(CREATE_TABLE_COURS);
+
+            // Enseignants
+            Utilisateur cedric = new Utilisateur("H111111","111111","Cédric","Peeters",true);
+            addUtilisateur(cedric);
+            Utilisateur joram = new Utilisateur("H222222","222222","Joram","Mushymiyimana",true);
+            addUtilisateur(joram);
+
+            // Eleves
+            Utilisateur bob = new Utilisateur("E111111","111111","Bob","Lennon",false);
+            addUtilisateur(bob);
+            Utilisateur luke = new Utilisateur("E222222","222222","Luke","Skywalker",false);
+            addUtilisateur(luke);
+
         }catch(SQLException e) {
             e.printStackTrace();
         }

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,6 +16,9 @@ import be.hers.info.inscriptionexamens.model.Examen;
 
 public class AdapterListView_Examen extends ArrayAdapter<Examen>
 {
+    // Checkboxes
+    private ArrayList<Integer> selectedIds = new ArrayList<>();
+
     public AdapterListView_Examen(Context context, ArrayList<Examen> examens)
     {
         super(context, R.layout.examen, examens);
@@ -23,7 +28,7 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
     public View getView(int position, View view, ViewGroup parent)
     {
         // Element
-        Examen examen = getItem(position);
+        final Examen examen = getItem(position);
 
         // vue à utiliser
         if(view == null)
@@ -53,6 +58,29 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
         TextView oDuree = view.findViewById(R.id.oDuree);
         oDuree.setText("" + examen.dureeMinute);
 
+
+        CheckBox checkBox = view.findViewById(R.id.iChoix);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                    selectedIds.add(examen.getId());
+                else
+                    selectedIds.remove(examen.getId());
+            }
+        });
+
         return view;
+    }
+
+    /**
+     * Accès à la liste des id des examens sélectionnés
+     * @return Liste d'ID d'examens dans la DB
+     */
+    public ArrayList<Integer> getSelectedIds()
+    {
+        return selectedIds;
     }
 }
