@@ -625,6 +625,7 @@ public class ExamDB extends SQLiteOpenHelper {
         return null;
     }
 
+
     public List<Examen> getAllExamenByListeAnnee(List<Integer> listeID)
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -655,6 +656,7 @@ public class ExamDB extends SQLiteOpenHelper {
 
         return null;
     }
+
 
 
     /**
