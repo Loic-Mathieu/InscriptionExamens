@@ -460,57 +460,6 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Récupérer un examen--------------------------------------------------------------------
-    public Examen getExamen(int refCours) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        try {
-            Cursor cursor = db.query(
-                    TABLE_EXAMEN,
-                    new String[]{
-                            EXAMEN_ID,
-                            EXAMEN_COURS,
-                            EXAMEN_TYPE,
-                            EXAMEN_DESCRIPTION,
-                            EXAMEN_DATE,
-                            EXAMEN_DUREE,
-                    },
-                    EXAMEN_COURS + "=?",
-                    new String[]{String.valueOf(refCours)},
-                    null,
-                    null,
-                    null,
-                    null
-            );
-
-            if (cursor != null)
-                cursor.moveToFirst();
-
-            Examen exam = new Examen(
-
-                    cursor.getInt(1),
-                    TypeExamen.valueOf(cursor.getString(2)), // String vers -> enum
-                    cursor.getString(3),
-                    cursor.getInt(5)
-            );
-
-            String str_d = cursor.getString(4);
-            LocalDateTime date = LocalDateTime.parse(str_d, formatter);
-            //LocalDateTime date = LocalDateTime.parse(str_d);
-            exam.date = date;
-
-            System.out.println("COMOESTA : "+cursor.getInt(0));
-
-            exam.setId(cursor.getInt(0));
-            return exam;
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            db.close();
-        }
-        return null;
-    }
-
-    //Récupérer un examen--------------------------------------------------------------------
     public Examen getExamenByID(int refExamen) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -660,7 +609,7 @@ public class ExamDB extends SQLiteOpenHelper {
                 {
                     // Add les références des examens dont un utilisateur est inscrit
                     do {
-                        listeExamens.add(getExamen(cursor.getInt(1)));
+                        listeExamens.add(getExamenByID(cursor.getInt(1)));
                     }
                     while (cursor.moveToNext());
                 }
