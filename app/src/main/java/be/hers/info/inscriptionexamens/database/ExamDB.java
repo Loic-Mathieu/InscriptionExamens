@@ -379,6 +379,47 @@ public class ExamDB extends SQLiteOpenHelper {
         return false;
     }
 
+    public boolean desinscrireUtilisateurAExamen(String matricule, int id_exam) {
+
+        Utilisateur x = getUtilisateur(matricule);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+
+            Cursor cursor = db.query(
+                    TABLE_UTIL_EXAM,
+                    new String[]{
+                            UTIL_EXAM_REFUTILISATEUR,
+                            UTIL_EXAM_REFEXAMEN
+                    },
+                    UTIL_EXAM_REFUTILISATEUR + "=? AND " + UTIL_EXAM_REFEXAMEN + "=?",
+                    new String[]{String.valueOf(x.getId()), String.valueOf(id_exam)},
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                db.delete(
+                        TABLE_UTIL_EXAM, UTIL_EXAM_REFUTILISATEUR + "=? AND " + UTIL_EXAM_REFEXAMEN + "=?",
+                        new String[] {
+                                String.valueOf(x.getId()), String.valueOf(id_exam),
+                        }
+                );
+            }
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return false;
+    }
+
     public ArrayList<Integer> getAllRefExamInscritByUser(int refUtilisateur){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Integer> listeExamens = new ArrayList<>();
@@ -574,6 +615,37 @@ public class ExamDB extends SQLiteOpenHelper {
         return null;
     }
 
+    public List<Examen> getAllExamenByListeAnnee(List<Integer> listeID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Examen> listeExamens;
+        ArrayList<Examen> listeRes = new ArrayList<>();
+
+        try
+        {
+            listeExamens = getAllExamen();
+            //Pour chaque élément de la liste d'examens
+            for(int i = 0; i < listeExamens.size() ; i++){
+                //On récupère le cours
+                Cours c = getCours(listeExamens.get(i).refCours);
+                //Pour chaque élément de la liste d'ID
+                for(int j = 0; j < listeID.size(); j++){
+                    //On check s'il est égal à l'année du cours
+                    if(c.getAnnee() == listeID.get(j)){
+                        //Si oui, on ajoute l'examen à la liste finale
+                        listeRes.add(getExamenByID(listeID.get(i)));
+                    }
+                }
+            }
+            //retourne la liste finale
+            return listeRes;
+        }
+        catch(Exception e){ e.printStackTrace(); }
+        finally { db.close(); }
+
+        return null;
+    }
+
 
     /**
      * Récupères tous les examens de la db créés par le prof
@@ -624,31 +696,22 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     //Update Examen
-    public int updateExamen(Utilisateur utilisateur) {
+    public int updateExamen(Examen exam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
             ContentValues values = new ContentValues();
-            StringBuilder str = new StringBuilder();
-            ArrayList<String> listeExam = utilisateur.getListeExamens();
 
-            for(int i=0; i<listeExam.size(); i++){
-                str.append(listeExam.get(i) + "|");
-            }
-
-            String resListe = str.toString();
-
-            values.put(UTILISATEUR_MATRICULE, utilisateur.getMatricule());
-            values.put(UTILISATEUR_MDP, utilisateur.getMdp());
-            values.put(UTILISATEUR_PRENOM, utilisateur.getPrenom());
-            values.put(UTILISATEUR_NOM, utilisateur.getNom());
-            values.put(UTILISATEUR_ESTPROF, utilisateur.getEstProf());
-            values.put(UTILISATEUR_LISTEEXAMENS, resListe);
+            values.put(EXAMEN_COURS, exam.refCours);
+            values.put(EXAMEN_TYPE, exam.typeExam.label);
+            values.put(EXAMEN_DESCRIPTION, exam.description);
+            values.put(EXAMEN_DATE, (exam.date).format(formatter));
+            values.put(EXAMEN_DUREE, exam.dureeMinute);
 
             return db.update(
-                    TABLE_UTILISATEUR, values, UTILISATEUR_ID + " = ?",
+                    TABLE_EXAMEN, values, EXAMEN_ID + " = ?",
                     new String[] {
-                            String.valueOf(utilisateur.getId())
+                            String.valueOf(exam.getId())
                     }
             );
         }catch(SQLException e){

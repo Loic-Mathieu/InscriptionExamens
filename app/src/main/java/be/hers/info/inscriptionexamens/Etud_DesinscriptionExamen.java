@@ -65,14 +65,19 @@ public class Etud_DesinscriptionExamen extends AppCompatActivity
 
         Button bDesinscription = findViewById(R.id.bDesinscription);
         bDesinscription.setOnClickListener
-                (
-                        new View.OnClickListener()
+        (
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        ArrayList<Integer> list = customList.getSelectedIds();
+                        for (int id_exam : list)
                         {
-                            public void onClick(View v)
-                            {
-                                // TODO s'desinscrire aux cours
-                            }
+                            if(db.desinscrireUtilisateurAExamen(matricule, id_exam))
+                                System.out.println("DESINSCRIT MHUAHAHAHAHA");
                         }
-                );
+                    }
+                }
+        );
     }
 }
