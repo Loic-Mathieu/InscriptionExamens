@@ -355,7 +355,7 @@ public class ExamDB extends SQLiteOpenHelper {
         return false;
     }
 
-    public Boolean inscrireEleveAExamen(String matricule, int id_exam)
+    public Boolean inscrireUtilisateurAExamen(String matricule, int id_exam)
     {
         Utilisateur x = getUtilisateur(matricule);
 
@@ -424,8 +424,10 @@ public class ExamDB extends SQLiteOpenHelper {
     //**************************** METHODES EXAMEN ******************************************
     //********************************************************************************************
     //Ajouter un examen-----------------------------------------------------------------------
-    public void addExamen(Examen exam) {
+    public int addExamen(Examen exam)
+    {
         SQLiteDatabase db = this.getWritableDatabase();
+        int n = -1;
 
         try{
 
@@ -438,11 +440,23 @@ public class ExamDB extends SQLiteOpenHelper {
             values.put(EXAMEN_DUREE, exam.dureeMinute);
 
             db.insert(TABLE_EXAMEN, null, values);
+
+
+            // Last id
+            String lastExam = "SELECT MAX(*) FROM " + TABLE_EXAMEN;
+            Cursor cursor = db.rawQuery(lastExam, null);
+            cursor.moveToFirst();
+
+            n = cursor.getInt(0);
+
         }catch(Exception e){
             e.printStackTrace();
         }finally{
             db.close();
         }
+
+        // id
+        return n;
     }
 
     //Récupérer un examen--------------------------------------------------------------------
@@ -636,6 +650,42 @@ public class ExamDB extends SQLiteOpenHelper {
         finally { db.close(); }
 
         return null;
+    }
+
+    //Update Examen
+    public int updateExamen(Utilisateur utilisateur) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+            ContentValues values = new ContentValues();
+            StringBuilder str = new StringBuilder();
+            ArrayList<String> listeExam = utilisateur.getListeExamens();
+
+            for(int i=0; i<listeExam.size(); i++){
+                str.append(listeExam.get(i) + "|");
+            }
+
+            String resListe = str.toString();
+
+            values.put(UTILISATEUR_MATRICULE, utilisateur.getMatricule());
+            values.put(UTILISATEUR_MDP, utilisateur.getMdp());
+            values.put(UTILISATEUR_PRENOM, utilisateur.getPrenom());
+            values.put(UTILISATEUR_NOM, utilisateur.getNom());
+            values.put(UTILISATEUR_ESTPROF, utilisateur.getEstProf());
+            values.put(UTILISATEUR_LISTEEXAMENS, resListe);
+
+            return db.update(
+                    TABLE_UTILISATEUR, values, UTILISATEUR_ID + " = ?",
+                    new String[] {
+                            String.valueOf(utilisateur.getId())
+                    }
+            );
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{
+            db.close();
+        }
+        return 0;
     }
 
     /**

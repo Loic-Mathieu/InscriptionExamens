@@ -127,9 +127,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
         //MAJ le prof
         db.updateUtilisateur(prof);
 
-        String output = "Examen Ajouté !"
-                + exam1.date.toString() + " "
-                + exam1.typeExam;
+        String output = "Examen Ajouté !";
 
         Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
     }
