@@ -626,6 +626,8 @@ public class ExamDB extends SQLiteOpenHelper {
             ArrayList<String> listeDuProf = prof.getListeExamens();
             ArrayList<Examen> listeExamens = new ArrayList<>();
 
+            System.out.println(listeDuProf);
+
             for(int i = 0; i < listeDuProf.size(); i++){
                 listeExamens.add(getExamen(Integer.parseInt(listeDuProf.get(i))));
             }

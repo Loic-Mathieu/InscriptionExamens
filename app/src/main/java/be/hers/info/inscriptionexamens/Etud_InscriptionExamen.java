@@ -63,7 +63,7 @@ public class Etud_InscriptionExamen extends AppCompatActivity
                         ArrayList<Integer> list = customList.getSelectedIds();
                         for (int id_exam : list)
                         {
-                            if(db.inscrireEleveAExamen(matricule, id_exam))
+                            if(db.inscrireUtilisateurAExamen(matricule, id_exam))
                                 System.out.println("ONE ADDED");
                         }
                     }
