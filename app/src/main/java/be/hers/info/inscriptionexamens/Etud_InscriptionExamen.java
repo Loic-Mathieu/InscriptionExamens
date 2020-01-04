@@ -36,16 +36,10 @@ public class Etud_InscriptionExamen extends AppCompatActivity
         final String matricule = preferences.getString("MATRICULE", "VIDE");
 
         final ExamDB db = new ExamDB(this);
-        Utilisateur prof = db.getUtilisateur(matricule);
+        Utilisateur user = db.getUtilisateur(matricule);
 
-        for (int id_exam : db.getAllRefExamInscritByUser(prof.getId()))
-        {
-            customList.add(db.getExamenByID(id_exam));
-        }
-
-        // TEMP
-        List<Examen> examens = db.getAllExamen();
-        customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "POST"));
+        List<Examen> examens = db.getExamenNonInscrit(user.getId());
+        customList.addAll(examens);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
