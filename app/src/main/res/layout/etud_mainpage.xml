@@ -23,6 +23,12 @@
             android:layout_height="wrap_content"
             android:text="@string/desinscription" />
 
+    <Button
+            android:id="@+id/bChange_pDeconnexionEtud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Deconnexion" />
+
     <ListView
         android:id="@+id/customListExamsModifies"
         android:layout_width="match_parent"

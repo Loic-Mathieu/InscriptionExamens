@@ -27,4 +27,10 @@
         android:layout_height="wrap_content"
         android:text="@string/bAjouterExamen" />
 
+    <Button
+        android:id="@+id/bChange_pDeconnexionProf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deconnexion" />
+
 </LinearLayout>

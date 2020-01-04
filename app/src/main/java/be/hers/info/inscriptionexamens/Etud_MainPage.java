@@ -66,11 +66,31 @@ public class Etud_MainPage extends AppCompatActivity
                 }
         );
 
+        // Déconnexion
+        Button changePage_deconnexionEtud = findViewById(R.id.bChange_pDeconnexionEtud);
+        changePage_deconnexionEtud.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        /*SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.remove("MATRICULE");
+                        editor.commit();*/
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        final String matricule = preferences.getString("MATRICULE", "VIDE");
+
         AdapterListView_Examen customList = new AdapterListView_Examen(this, new ArrayList<Examen>());
         ListView listView = findViewById(R.id.customListExamsModifies);
-        customList.addAll(db.getExamModifies());
+        customList.addAll(db.getExamModifies(matricule));
 
         listView.setAdapter(customList);
-
     }
 }

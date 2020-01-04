@@ -806,7 +806,7 @@ public class ExamDB extends SQLiteOpenHelper {
      * Récupères tous les examens de la db créés par le prof
      * @return liste d'examens enregistrés dans la DB
      */
-    public List<Examen> getAllExamenProf(String matricule)
+    public List<Examen> getAllExamenUser(String matricule)
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -1013,9 +1013,10 @@ public class ExamDB extends SQLiteOpenHelper {
      * récupère une liste d'élèves inscrits à un examen
      * @return listeEleves
      */
-    public ArrayList<Examen> getExamModifies() {
+    public ArrayList<Examen> getExamModifies(String refUtilisateur) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<Examen> listeRefExams = new ArrayList<>();
+        ArrayList<Examen> listeExaModif = new ArrayList<>();
+        List<Examen> listeInscriptions = getAllExamenUser(refUtilisateur);
 
         try{
             Cursor cursor = db.query(
@@ -1038,7 +1039,11 @@ public class ExamDB extends SQLiteOpenHelper {
                 {
                     // Add all examensModifiés
                     do {
-                        listeRefExams.add(getExamenByID(cursor.getInt(0)));
+                        for(int i = 0; i < listeInscriptions.size(); i++){
+                            if(listeInscriptions.get(i).getId() == cursor.getInt(0)){
+                                listeExaModif.add(getExamenByID(cursor.getInt(0)));
+                            }
+                        }
                     }
                     while (cursor.moveToNext());
                 }
@@ -1049,7 +1054,7 @@ public class ExamDB extends SQLiteOpenHelper {
         }finally {
             db.close();
         }
-        return listeRefExams;
+        return listeExaModif;
     }
 
 
@@ -1152,6 +1157,9 @@ public class ExamDB extends SQLiteOpenHelper {
                 }
                 while (cursor.moveToNext());
             }
+
+
+
 
             System.out.println("Liste des Cours : "+listeCours);
             return listeCours;
