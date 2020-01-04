@@ -66,7 +66,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
         Spinner spinner = findViewById(R.id.iCours);
 
         // Adapt
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        final ArrayAdapter<Cours> adapter = new ArrayAdapter<>(
                 this,
                 R.layout.support_simple_spinner_dropdown_item
         );
@@ -75,12 +75,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
         final ExamDB db = new ExamDB(this);
 
         ArrayList<Cours> listCours = db.getAllCours();
-
-        // ajout des cours
-        for(Cours c : listCours)
-        {
-            adapter.add(c.toString());
-        }
+        adapter.addAll(listCours);
     }
 
 
@@ -103,8 +98,11 @@ public class Prof_AjouterExamen extends AppCompatActivity
         Spinner iType = findViewById(R.id.iTypeExam);
         String type = iType.getSelectedItem().toString();
 
+        Spinner iCours = findViewById(R.id.iCours);
+        Cours cours = (Cours) iCours.getSelectedItem();
+
         Examen exam1 = new Examen(
-                1,
+                cours.getId(),
                 TypeExamen.valueOf(type),
                 description,
                 date,
@@ -123,7 +121,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
             db.inscrireUtilisateurAExamen(matricule, refExam);
         }
 
-        String output = "Examen Ajouté !";
+        String output = "Examen Ajouté ! ";
 
         Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
     }
