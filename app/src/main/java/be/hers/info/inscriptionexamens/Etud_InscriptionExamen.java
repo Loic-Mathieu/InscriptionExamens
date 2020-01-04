@@ -45,7 +45,7 @@ public class Etud_InscriptionExamen extends AppCompatActivity
 
         // TEMP
         List<Examen> examens = db.getAllExamen();
-        customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "ANT"));
+        customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "POST"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

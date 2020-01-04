@@ -1,6 +1,7 @@
 package be.hers.info.inscriptionexamens.custom;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 
 import be.hers.info.inscriptionexamens.R;
+import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Examen;
 
 public class AdapterListView_Examen extends ArrayAdapter<Examen>
@@ -24,11 +28,16 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
         super(context, R.layout.examen, examens);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getView(int position, View view, ViewGroup parent)
     {
         // Element
         final Examen examen = getItem(position);
+        ExamDB db = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            db = new ExamDB(getContext());
+        }
 
         // vue à utiliser
         if(view == null)
@@ -39,7 +48,8 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
 
         // Nom du cours
         TextView nomCours = view.findViewById(R.id.oNomCours);
-        nomCours.setText("" + examen.getId());
+        nomCours.setText("" + db.getCours(examen.refCours).toString());
+
 
         // Type d'examen
         TextView oQuadri = view.findViewById(R.id.oTypeExam);
