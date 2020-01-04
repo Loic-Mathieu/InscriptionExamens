@@ -1,6 +1,7 @@
 package be.hers.info.inscriptionexamens;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -55,6 +56,10 @@ public class Etud_ChoixAnnee extends AppCompatActivity
                     annes.add(String.valueOf(3));
 
                 savePreferences(annes);
+
+                // Switch page
+                Intent intent = new Intent(getApplicationContext(), Etud_MainPage.class);
+                startActivity(intent);
             }
         });
     }
