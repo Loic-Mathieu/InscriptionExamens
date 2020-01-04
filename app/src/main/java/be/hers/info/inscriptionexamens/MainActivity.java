@@ -98,7 +98,12 @@ public class MainActivity extends AppCompatActivity
                         if(db.verifierEstProf(matricule.getText().toString()))
                             intent = new Intent(getApplicationContext(), Prof_MainPage.class);
                         else
-                            intent = new Intent(getApplicationContext(), Etud_MainPage.class);
+                        {
+                            if(true)
+                                intent = new Intent(getApplicationContext(), Etud_ChoixAnnee.class);
+                            else
+                                intent = new Intent(getApplicationContext(), Etud_MainPage.class);
+                        }
 
                         // Mettre le matricule dans les préférences
                         SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
