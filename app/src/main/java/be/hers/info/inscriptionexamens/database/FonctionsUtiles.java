@@ -44,13 +44,11 @@ public class FonctionsUtiles {
                     }
                 }
             }
-            //retourne la liste finale
-            return listeRes;
         }
         catch(Exception e){ e.printStackTrace(); }
-        finally { }
 
-        return null;
+        //retourne la liste finale
+        return listeRes;
     }
 
 }

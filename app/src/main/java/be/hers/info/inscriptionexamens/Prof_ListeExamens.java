@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.RequiresApi;
@@ -16,13 +14,27 @@ import java.util.List;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListVew_ExamProf;
 import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.database.FonctionsUtiles;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 public class Prof_ListeExamens extends AppCompatActivity
 {
-
     private AdapterListVew_ExamProf customList;
+
+    /**
+     *
+     * @return
+     */
+    private String getExtra()
+    {
+        Bundle extra = this.getIntent().getExtras();
+
+        if(extra != null)
+            return extra.getString("FILTRE");
+        else
+            return "POST";
+    }
 
     /**
      * Initialise la listView d'examens
@@ -37,12 +49,8 @@ public class Prof_ListeExamens extends AppCompatActivity
         final ExamDB db = new ExamDB(this);
         Utilisateur prof = db.getUtilisateur(matricule);
 
-        List<Examen> examens = new ArrayList<>();
-        for (int id_exam : db.getAllRefExamInscritByUser(prof.getId()))
-        {
-            System.out.println("ID EXAMEN DEMANDE "+id_exam);
-            customList.add(db.getExamenByID(id_exam));
-        }
+        List<Examen> examens = db.getExamenByInscription(prof.getId());
+        customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, getExtra()));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -19,7 +19,7 @@ public class Prof_MainPage extends AppCompatActivity
         // Toast
         Toast.makeText(Prof_MainPage.this, "Page Prof !", Toast.LENGTH_SHORT).show();
 
-        // Page d'inscription
+        // Page liste examens à venir
         Button changePage_listeExamens = findViewById(R.id.bChange_pListeExamens);
         changePage_listeExamens.setOnClickListener(
                 new View.OnClickListener()
@@ -27,13 +27,27 @@ public class Prof_MainPage extends AppCompatActivity
                     public void onClick(View v)
                     {
                         Intent intent = new Intent(getApplicationContext(), Prof_ListeExamens.class);
-                        // intent.putExtra("name", val);
+                        intent.putExtra("FILTRE", "POST");
                         startActivity(intent);
                     }
                 }
         );
 
-        // Page de désinscription
+        // Page liste examens passés
+        Button changePage_listeExamensPassees = findViewById(R.id.bChange_pListeExamensPasees);
+        changePage_listeExamensPassees.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(getApplicationContext(), Prof_ListeExamens.class);
+                        intent.putExtra("FILTRE", "ANT");
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        // Page de création
         Button changePage_ajouterExamen = findViewById(R.id.bChange_pAjouterExamen);
         changePage_ajouterExamen.setOnClickListener(
                 new View.OnClickListener()
@@ -41,7 +55,6 @@ public class Prof_MainPage extends AppCompatActivity
                     public void onClick(View v)
                     {
                         Intent intent = new Intent(getApplicationContext(), Prof_AjouterExamen.class);
-                        // intent.putExtra("name", val);
                         startActivity(intent);
                     }
                 }

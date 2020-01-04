@@ -9,30 +9,22 @@
         android:gravity="center"
         android:text="@string/oMenu" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/bChange_pListeExamens"
         android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:text="@string/bListerExamens" />
 
-        <Button
-            android:id="@+id/bChange_pListeExamens"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/bListerExamens" />
-    </LinearLayout>
-
-    <LinearLayout
+    <Button
+        android:id="@+id/bChange_pListeExamensPasees"
         android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:text="@string/oListeExamPassees" />
 
-        <Button
-            android:id="@+id/bChange_pAjouterExamen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/bAjouterExamen" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/bChange_pAjouterExamen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bAjouterExamen" />
 
 </LinearLayout>
