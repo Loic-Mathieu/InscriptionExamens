@@ -1,6 +1,7 @@
 package be.hers.info.inscriptionexamens;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -76,6 +77,8 @@ public class Etud_InscriptionExamen extends AppCompatActivity
                         {
                             db.inscrireUtilisateurAExamen(matricule, id_exam);
                         }
+                        Intent intent = new Intent(getApplicationContext(), Etud_MainPage.class);
+                        startActivity(intent);
                     }
                 }
         );
