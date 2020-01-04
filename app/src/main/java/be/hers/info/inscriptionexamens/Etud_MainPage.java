@@ -84,11 +84,13 @@ public class Etud_MainPage extends AppCompatActivity
                 }
         );
 
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        final String matricule = preferences.getString("MATRICULE", "VIDE");
+
         AdapterListView_Examen customList = new AdapterListView_Examen(this, new ArrayList<Examen>());
         ListView listView = findViewById(R.id.customListExamsModifies);
-        customList.addAll(db.getExamModifies());
+        customList.addAll(db.getExamModifies(matricule));
 
         listView.setAdapter(customList);
-
     }
 }
