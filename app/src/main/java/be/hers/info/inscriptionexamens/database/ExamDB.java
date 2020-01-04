@@ -447,46 +447,6 @@ public class ExamDB extends SQLiteOpenHelper {
         return false;
     }
 
-    public ArrayList<Integer> getAllRefExamInscritByUser(int refUtilisateur){
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Integer> listeExamens = new ArrayList<>();
-
-        try
-        {
-            Cursor cursor = db.query(
-                    TABLE_UTIL_EXAM,
-                    new String[]{
-                            UTIL_EXAM_REFUTILISATEUR,
-                            UTIL_EXAM_REFEXAMEN,
-                    },
-                    UTIL_EXAM_REFUTILISATEUR + "=?",
-                    new String[]{String.valueOf(refUtilisateur)},
-                    null,
-                    null,
-                    null,
-                    null
-            );
-
-            // Si le curseur existe
-            if (cursor != null)
-            {
-                if(cursor.moveToFirst())
-                {
-                    // Add les références des examens dont un utilisateur est inscrit
-                    do {
-                        listeExamens.add(cursor.getInt(1));
-                    }
-                    while (cursor.moveToNext());
-                }
-            }
-
-            return listeExamens;
-        }
-        catch(Exception e){ e.printStackTrace(); }
-        finally { db.close(); }
-
-        return null;
-    }
 
     //********************************************************************************************
     //**************************** METHODES EXAMEN ******************************************
@@ -577,72 +537,6 @@ public class ExamDB extends SQLiteOpenHelper {
         }
         return null;
     }
-
-    /**
-     * Récupères tous les examens de la db
-     * @return liste d'examens enregistrés dans la DB
-     */
-    public List<Examen> getAllExamen()
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Examen> listeExamens = new ArrayList<>();
-
-        try
-        {
-            Cursor cursor = db.query(
-                    TABLE_EXAMEN,
-                    new String[]{
-                            EXAMEN_ID,
-                            EXAMEN_COURS,
-                            EXAMEN_TYPE,
-                            EXAMEN_DESCRIPTION,
-                            EXAMEN_DATE,
-                            EXAMEN_DUREE,
-                    },
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );
-
-            // Si le curseur existe
-            if (cursor != null)
-            {
-                if(cursor.moveToFirst())
-                {
-                    // Add all examens
-                    do {
-                        Examen exam = new Examen
-                        (
-                            cursor.getInt(1),
-                            TypeExamen.valueOf(cursor.getString(2)),
-                            cursor.getString(3),
-                            cursor.getInt(5)
-                        );
-
-                        String str_d = cursor.getString(4);
-                        LocalDateTime date = LocalDateTime.parse(str_d, formatter);
-                        // LocalDateTime date = LocalDateTime.parse(str_d);
-                        exam.date = date;
-
-                        exam.setId(cursor.getInt(0));
-                        listeExamens.add(exam);
-                    }
-                    while (cursor.moveToNext());
-                }
-            }
-
-            return listeExamens;
-        }
-        catch(Exception e){ e.printStackTrace(); }
-        finally { db.close(); }
-
-        return null;
-    }
-
-
 
     /**
      * récupère les examens aux quels un utilisateur est inscrit
@@ -768,88 +662,6 @@ public class ExamDB extends SQLiteOpenHelper {
         return listeExamens;
     }
 
-
-    public List<Examen> getAllExamenByListeAnnee(List<Integer> listeAnnee)
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<Examen> listeExamens;
-        ArrayList<Examen> listeRes = new ArrayList<>();
-
-        try
-        {
-            listeExamens = getAllExamen();
-            //Pour chaque élément de la liste d'examens
-            for(int i = 0; i < listeExamens.size() ; i++){
-                //On récupère le cours
-                Cours c = getCours(listeExamens.get(i).refCours);
-                //Pour chaque élément de la liste d'ID
-                for(int j = 0; j < listeAnnee.size(); j++){
-                    //On check s'il est égal à l'année du cours
-                    if(c.getAnnee() == listeAnnee.get(j)){
-                        //Si oui, on ajoute l'examen à la liste finale
-                        listeRes.add(getExamenByID(listeAnnee.get(i)));
-                    }
-                }
-            }
-            //retourne la liste finale
-            return listeRes;
-        }
-        catch(Exception e){ e.printStackTrace(); }
-        finally { db.close(); }
-
-        return null;
-    }
-
-
-
-    /**
-     * Récupères tous les examens de la db créés par le prof
-     * @return liste d'examens enregistrés dans la DB
-     */
-    public List<Examen> getAllExamenUser(String matricule)
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        try
-        {
-            Utilisateur prof = getUtilisateur(matricule);
-            ArrayList<Examen> listeExamens = new ArrayList<>();
-
-            Cursor cursor = db.query(
-                    TABLE_UTIL_EXAM,
-                    new String[]{
-                            UTIL_EXAM_REFUTILISATEUR,
-                            UTIL_EXAM_REFEXAMEN,
-                    },
-                    UTIL_EXAM_REFUTILISATEUR + "=?",
-                    new String[]{String.valueOf(prof.getId())},
-                    null,
-                    null,
-                    null,
-                    null
-            );
-
-            // Si le curseur existe
-            if (cursor != null)
-            {
-                if(cursor.moveToFirst())
-                {
-                    // Add les références des examens dont un utilisateur est inscrit
-                    do {
-                        listeExamens.add(getExamenByID(cursor.getInt(1)));
-                    }
-                    while (cursor.moveToNext());
-                }
-            }
-
-            return listeExamens;
-        }
-        catch(Exception e){ e.printStackTrace(); }
-        finally { db.close(); }
-
-        return null;
-    }
-
     //Update Examen
     public int updateExamen(int id_exam, Examen exam) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -877,66 +689,6 @@ public class ExamDB extends SQLiteOpenHelper {
             db.close();
         }
         return -1;
-    }
-
-    /**
-     * Delete un examen de la db
-     */
-    public boolean deleteExam(int refExam) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        try{
-            ArrayList<Integer> listeEtudiants = new ArrayList<>();
-
-            Cursor cursor = db.query(
-                    TABLE_UTIL_EXAM,
-                    new String[]{
-                            UTIL_EXAM_REFUTILISATEUR
-                    },
-                    UTIL_EXAM_REFEXAMEN + "=?",
-                    new String[]{String.valueOf(refExam)},
-                    null,
-                    null,
-                    null,
-                    null
-            );
-
-            // Si le curseur existe
-            if (cursor != null)
-            {
-                if(cursor.moveToFirst())
-                {
-                    // Add les références des étudiants inscrits
-                    do {
-                        listeEtudiants.add(cursor.getInt(0));
-                    }
-                    while (cursor.moveToNext());
-                }
-
-                for(int i = 0; i < listeEtudiants.size(); i++){
-                    Utilisateur etudiant = getUtilisateurByID(listeEtudiants.get(i));
-                    ArrayList<String> listeExam = etudiant.getListeExamens();
-                    for(String el : listeExam){
-                        if(el.equals(refExam)){
-                            listeExam.remove(el);
-                        }
-                    }
-                    updateUtilisateur(etudiant);
-                }
-                db.delete(
-                        TABLE_EXAMEN, EXAMEN_ID + " = ?",
-                        new String[] {
-                                String.valueOf(refExam)
-                        }
-                );
-            }
-            return true;
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally {
-            db.close();
-        }
-        return false;
     }
 
     /**
@@ -1010,51 +762,65 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
     /**
-     * récupère une liste d'élèves inscrits à un examen
-     * @return listeEleves
+     *
+     * @param refUtilisateur
+     * @return
      */
-    public ArrayList<Examen> getExamModifies(String refUtilisateur) {
+    public List<Examen> getExamModifies(int refUtilisateur)
+    {
         SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<Examen> listeExaModif = new ArrayList<>();
-        List<Examen> listeInscriptions = getAllExamenUser(refUtilisateur);
+        LinkedList<Examen> listeExamens = new LinkedList<>();
 
-        try{
-            Cursor cursor = db.query(
-                    TABLE_NOTIFICATION,
-                    new String[]{
-                            NOTIF_REFEXAMEN
-                    },
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );
+        try
+        {
+            // Inner join
+            String rawQuery = "SELECT " + EXAMEN_ID + ", " + EXAMEN_COURS + ", " + EXAMEN_TYPE + ", "
+                    + EXAMEN_DESCRIPTION + ", " + EXAMEN_DATE + ", " +EXAMEN_DUREE
+                    + " FROM " + TABLE_EXAMEN
+                    + " WHERE " + EXAMEN_ID + " IN ( "
+                        + " SELECT "+ NOTIF_REFEXAMEN
+                        + " FROM " + TABLE_NOTIFICATION
+                    + " ) AND " + EXAMEN_ID + " IN ("
+                        + " SELECT "+ UTIL_EXAM_REFEXAMEN
+                        + " FROM "+ TABLE_UTIL_EXAM
+                        + " WHERE " + UTIL_EXAM_REFUTILISATEUR + " =?"
+                    +" ) ";
+
+            Cursor cursor = db.rawQuery(rawQuery, new String[]{String.valueOf(refUtilisateur)});
 
             // Si le curseur existe
             if (cursor != null)
             {
                 if(cursor.moveToFirst())
                 {
-                    // Add all examensModifiés
+                    // Add all examens
                     do {
-                        for(int i = 0; i < listeInscriptions.size(); i++){
-                            if(listeInscriptions.get(i).getId() == cursor.getInt(0)){
-                                listeExaModif.add(getExamenByID(cursor.getInt(0)));
-                            }
-                        }
-                    }
-                    while (cursor.moveToNext());
+                        Examen exam = new Examen
+                                (
+                                        cursor.getInt(1),
+                                        TypeExamen.valueOf(cursor.getString(2)),
+                                        cursor.getString(3),
+                                        cursor.getInt(5)
+                                );
+
+                        String str_d = cursor.getString(4);
+                        LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+                        // LocalDateTime date = LocalDateTime.parse(str_d);
+                        exam.date = date;
+
+                        exam.setId(cursor.getInt(0));
+                        listeExamens.add(exam);
+                    } while (cursor.moveToNext());
                 }
             }
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally {
+        }
+        catch (Exception e){e.printStackTrace();}
+        finally
+        {
             db.close();
         }
-        return listeExaModif;
+
+        return listeExamens;
     }
 
 

@@ -77,7 +77,7 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
                 if(isChecked)
                     selectedIds.add(examen.getId());
                 else
-                    selectedIds.remove(examen.getId());
+                    selectedIds.remove(Integer.valueOf(examen.getId()));
             }
         });
 
