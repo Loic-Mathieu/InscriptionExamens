@@ -1035,10 +1035,9 @@ public class ExamDB extends SQLiteOpenHelper {
                 {
                     // Add all examensModifiés
                     do {
-                        Examen exam = getExamenByID(cursor.getInt(0));
                         for(int i = 0; i < listeInscriptions.size(); i++){
-                            if(listeInscriptions.get(i).equals(exam)){
-                                listeExaModif.add(exam);
+                            if(listeInscriptions.get(i).getId() == cursor.getInt(0)){
+                                listeExaModif.add(getExamenByID(cursor.getInt(0)));
                             }
                         }
                     }
