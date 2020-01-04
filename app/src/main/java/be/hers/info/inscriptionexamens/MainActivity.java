@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.model.Cours;
@@ -18,22 +19,48 @@ import be.hers.info.inscriptionexamens.model.Utilisateur;
 
 public class MainActivity extends AppCompatActivity
 {
+    /**
+     * Vérifie si la personne qui essaie de se connecter est un utilisateur
+     * @param matricule matricule entré par l'utilisateur
+     * @param password mot de passe entré par l'utilisateur
+     * @return true si l'utilisateur existe dans la base de donnée
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean isUser(String matricule, String password)
     {
-        // TODO : DB check
-        return true;
+        if(matricule.isEmpty() || password.isEmpty())
+            return false;
 
-    }
+        final ExamDB db = new ExamDB(this);
+        if(db.getUtilisateur(matricule) == null)
+            return false;
 
-    private boolean isTeacher(String matricule)
-    {
-        // TODO : DB check
-        return false;
+        return db.comparerMDP(matricule, password);
     }
 
     /**
-     *
-     * @return
+     * Vérifie si la personne qui se connecte est un prof ou non
+     * @param matricule matricule de l'utilisateur
+     * @return true si l'utilisateur est un prof
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isTeacher(String matricule)
+    {
+        if(matricule.isEmpty())
+            return false;
+
+        final ExamDB db = new ExamDB(this);
+        Utilisateur user = db.getUtilisateur(matricule);
+
+        if(user == null)
+            return false;
+
+        return user.getEstProf();
+    }
+
+    /**
+     * Vérifie si il existe des préférences d'années (ANNEES)
+     * @return vrai si il existe des préférences, faux sinon
      */
     private boolean checkSharedPreferences()
     {
@@ -87,9 +114,6 @@ public class MainActivity extends AppCompatActivity
         // Initialise la DB si besoin
         initDB();
 
-        //On crée la DB
-        final ExamDB db = new ExamDB(this);
-
         // Boutton connexion
         Button button = findViewById(R.id.bConnect);
 
@@ -102,10 +126,10 @@ public class MainActivity extends AppCompatActivity
             {
                 public void onClick(View v)
                 {
-                    if(db.comparerMDP(matricule.getText().toString(), password.getText().toString()))
+                    if(isUser(matricule.getText().toString(), password.getText().toString()))
                     {
                         Intent intent;
-                        if(db.verifierEstProf(matricule.getText().toString()))
+                        if(isTeacher(matricule.getText().toString()))
                             intent = new Intent(getApplicationContext(), Prof_MainPage.class);
                         else
                         {
@@ -123,6 +147,11 @@ public class MainActivity extends AppCompatActivity
 
                         startActivity(intent);
                     }
+                    else
+                    {
+                        Toast.makeText(v.getContext(), "Identifiants incorrects !", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         );

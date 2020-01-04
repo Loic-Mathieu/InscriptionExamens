@@ -1,8 +1,8 @@
 package be.hers.info.inscriptionexamens;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SyncStats;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +13,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.database.ExamDB;
@@ -38,7 +41,9 @@ public class Etud_InscriptionExamen extends AppCompatActivity
         final ExamDB db = new ExamDB(this);
         Utilisateur user = db.getUtilisateur(matricule);
 
-        List<Examen> examens = db.getExamenNonInscrit(user.getId());
+        final Set<String> annees = preferences.getStringSet("ANNEES", new HashSet<>(Arrays.asList("1", "2", "3")) );
+
+        List<Examen> examens = db.getExamenNonInscrit(user.getId(), annees);
         customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "POST"));
     }
 
@@ -70,9 +75,10 @@ public class Etud_InscriptionExamen extends AppCompatActivity
                         ArrayList<Integer> list = customList.getSelectedIds();
                         for (int id_exam : list)
                         {
-                            if(db.inscrireUtilisateurAExamen(matricule, id_exam))
-                                System.out.println("ONE ADDED");
+                            db.inscrireUtilisateurAExamen(matricule, id_exam);
                         }
+                        Intent intent = new Intent(getApplicationContext(), Etud_MainPage.class);
+                        startActivity(intent);
                     }
                 }
         );

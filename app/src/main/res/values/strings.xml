@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">inscriptionExamens</string>
-    <string name="mainTitle">SAMPLE TEXT</string>
+    <string name="mainTitle">Veuillez vous connecter</string>
 
     <string name="inscription">Inscription</string>
     <string name="desinscription">Désinscription</string>
@@ -10,17 +10,18 @@
     <string name="bDesinscription">Se désinscrire</string>
     <string name="bAjouterExamen">Ajouter un examen</string>
     <string name="bListerExamens">Lister les examens</string>
+    <string name="bSupprimer">Supprimer</string>
+    <string name="bListeEtudiants">Liste d\'étudiants</string>
+    <string name="bValider">Valider</string>
+    <string name="bModifier">Modifier</string>
 
     <string name="iMatricule">Matricule</string>
     <string name="iPassword">Mot de passe</string>
 
-    <string name="foo">PLACE_HOLDER</string>
     <string name="oMenu">Menu</string>
     <string name="oListeExamens">Liste des examens</string>
-    <string name="bSupprimer">Supprimer</string>
-    <string name="bValider">Valider</string>
-    <string name="bListeEtudiants">Liste d\'étudiants</string>
-    <string name="bModifier">Modifier</string>
     <string name="oChoixAnneTitle">Choisissez les années qui vous intéressent</string>
     <string name="oListeExamPassees">Lister les examens passés</string>
+
+    <string name="foo">PLACE_HOLDER</string>
 </resources>

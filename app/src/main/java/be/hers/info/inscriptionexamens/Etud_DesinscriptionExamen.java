@@ -71,8 +71,7 @@ public class Etud_DesinscriptionExamen extends AppCompatActivity
                         ArrayList<Integer> list = customList.getSelectedIds();
                         for (int id_exam : list)
                         {
-                            if(db.desinscrireUtilisateurAExamen(matricule, id_exam))
-                                System.out.println("DESINSCRIT MHUAHAHAHAHA");
+                            db.desinscrireUtilisateurAExamen(matricule, id_exam);
                         }
                         Intent intent = new Intent(getApplicationContext(), Etud_MainPage.class);
                         startActivity(intent);
