@@ -30,8 +30,8 @@ import be.hers.info.inscriptionexamens.model.TypeExamen;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Prof_AjouterExamen extends AppCompatActivity
 {
-    private LocalDate curDate;
-    private LocalTime curTime;
+    private LocalDate curDate = LocalDate.now();
+    private LocalTime curTime = LocalTime.now();
 
     /**
      * initialise le spinner des types d'examens
@@ -55,7 +55,7 @@ public class Prof_AjouterExamen extends AppCompatActivity
     }
 
     /**
-     *
+     * Initialise le spinner en y placant tous les cours existant
      */
     private void initSpinnerCours()
     {
