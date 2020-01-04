@@ -91,6 +91,18 @@ public class ExamDB extends SQLiteOpenHelper {
             + "CONSTRAINT unqInscr UNIQUE ("+UTIL_EXAM_REFUTILISATEUR+", "+UTIL_EXAM_REFEXAMEN+")"
             + " );";
 
+    // Table AnneeEtud----------------------------------------------------------------------------
+    private static final String TABLE_ANNEE_ETUD = "annee_etud";
+    private static final String ANNEE_ETUD_REFETUDIANT = "refEtudiant";
+    private static final String ANNEE_ETUD_ANNEE = "année";
+
+    private static final String CREATE_TABLE_ANNEE_ETUD = "create table " + TABLE_ANNEE_ETUD + " ("
+            + "_id integer primary key autoincrement, "
+            + ANNEE_ETUD_REFETUDIANT + " integer not null, "
+            + ANNEE_ETUD_ANNEE + " integer not null, "
+            + "CONSTRAINT unqInscr UNIQUE ("+ANNEE_ETUD_REFETUDIANT+", "+ANNEE_ETUD_ANNEE+")"
+            + " );";
+
     //Table Cours----------------------------------------------------------------------------
     private static final String TABLE_COURS = "cours";
     private static final String COURS_ID = "_id";
@@ -116,6 +128,7 @@ public class ExamDB extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_EXAMEN);
             db.execSQL(CREATE_TABLE_COURS);
             db.execSQL(CREATE_TABLE_UTILISATEUR_EXAM);
+            db.execSQL(CREATE_TABLE_ANNEE_ETUD);
 
         }
         catch(SQLException e) { e.printStackTrace(); }
@@ -232,9 +245,11 @@ public class ExamDB extends SQLiteOpenHelper {
                 listeExam.add(separation[i]);
             }
 
-            System.out.println("ID USER ICI : "+utilisateur.getId());
             utilisateur.setId(cursor.getInt(0));
+
+            System.out.println("ID USER ICI : "+utilisateur.getId());
             return utilisateur;
+
 
         }catch(Exception e){
             e.printStackTrace();
