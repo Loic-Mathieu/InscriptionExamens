@@ -69,10 +69,10 @@ public class Prof_MainPage extends AppCompatActivity
                 {
                     public void onClick(View v)
                     {
-                        /*SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+                        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.remove("MATRICULE");
-                        editor.commit();*/
+                        editor.commit();
 
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
