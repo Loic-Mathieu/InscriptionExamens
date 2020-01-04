@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
@@ -697,10 +698,11 @@ public class ExamDB extends SQLiteOpenHelper {
      * @param refUtilisateur id de l'utilisateur
      * @return examens aux quels il est possible de s'inscrire
      */
-    public List<Examen> getExamenNonInscrit(int refUtilisateur)
+    public List<Examen> getExamenNonInscrit(int refUtilisateur, Set<String> data)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         LinkedList<Examen> listeExamens = new LinkedList<Examen>();
+        String inStatement = String.join(", ", data);
 
         try
         {
@@ -712,7 +714,8 @@ public class ExamDB extends SQLiteOpenHelper {
                         + " SELECT "+ UTIL_EXAM_REFEXAMEN
                         + " FROM "+ TABLE_UTIL_EXAM
                         + " WHERE " + UTIL_EXAM_REFUTILISATEUR + " =?"
-                    +" ) ";
+                    +" ) AND "
+                    + EXAMEN_COURS + " IN (" + inStatement  + " )";
 
             Cursor cursor = db.rawQuery(rawQuery, new String[]{String.valueOf(refUtilisateur)});
 

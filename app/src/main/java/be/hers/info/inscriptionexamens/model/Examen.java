@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Examen
 {
-    int id;
+    private int id;
     public int refCours;
 
     public TypeExamen typeExam;
