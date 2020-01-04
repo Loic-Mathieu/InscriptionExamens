@@ -680,7 +680,7 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
 
-    public List<Examen> getAllExamenByListeAnnee(List<Integer> listeID)
+    public List<Examen> getAllExamenByListeAnnee(List<Integer> listeAnnee)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Examen> listeExamens;
@@ -694,11 +694,11 @@ public class ExamDB extends SQLiteOpenHelper {
                 //On récupère le cours
                 Cours c = getCours(listeExamens.get(i).refCours);
                 //Pour chaque élément de la liste d'ID
-                for(int j = 0; j < listeID.size(); j++){
+                for(int j = 0; j < listeAnnee.size(); j++){
                     //On check s'il est égal à l'année du cours
-                    if(c.getAnnee() == listeID.get(j)){
+                    if(c.getAnnee() == listeAnnee.get(j)){
                         //Si oui, on ajoute l'examen à la liste finale
-                        listeRes.add(getExamenByID(listeID.get(i)));
+                        listeRes.add(getExamenByID(listeAnnee.get(i)));
                     }
                 }
             }
