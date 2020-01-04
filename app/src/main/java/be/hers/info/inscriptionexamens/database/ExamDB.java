@@ -725,7 +725,11 @@ public class ExamDB extends SQLiteOpenHelper {
                         + " FROM "+ TABLE_UTIL_EXAM
                         + " WHERE " + UTIL_EXAM_REFUTILISATEUR + " =?"
                     +" ) AND "
-                    + EXAMEN_COURS + " IN (" + inStatement  + " )";
+                    + EXAMEN_COURS + " IN ( "
+                        + " SELECT "+ COURS_ID
+                        + " FROM " + TABLE_COURS
+                        + " WHERE " + COURS_ANNEE + " IN ( "+ inStatement  +" )"
+                    + " )";
 
             Cursor cursor = db.rawQuery(rawQuery, new String[]{String.valueOf(refUtilisateur)});
 
