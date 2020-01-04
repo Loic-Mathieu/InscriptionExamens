@@ -17,6 +17,7 @@ import java.util.List;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.database.FonctionsUtiles;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
@@ -28,14 +29,18 @@ public class Etud_DesinscriptionExamen extends AppCompatActivity
 
     /**
      * Initialise la listView
-     * @param refUtilisateur id de l'utilisateur connecté
      */
-    private void initList(int refUtilisateur)
+    private void initList()
     {
-        // Liste d'examens inscits
-        List<Examen> examens = db.getExamenByInscription(refUtilisateur);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        final String matricule = preferences.getString("MATRICULE", "VIDE");
 
-        customList.addAll(examens);
+        final ExamDB db = new ExamDB(this);
+        Utilisateur user = db.getUtilisateur(matricule);
+
+        // Liste d'examens inscits
+        List<Examen> examens = db.getExamenByInscription(user.getId());
+        customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "POST"));
     }
 
     @Override
@@ -49,15 +54,12 @@ public class Etud_DesinscriptionExamen extends AppCompatActivity
         ListView listView = findViewById(R.id.customListExams);
         listView.setAdapter(customList);
 
+        // init list
+        initList();
 
+        // Matricule
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
         final String matricule = preferences.getString("MATRICULE", "VIDE");
-
-        // Recup l'utilisateur
-        Utilisateur user = db.getUtilisateur(matricule);
-
-        // init liste
-        initList(user.getId());
 
         Button bDesinscription = findViewById(R.id.bDesinscription);
         bDesinscription.setOnClickListener
