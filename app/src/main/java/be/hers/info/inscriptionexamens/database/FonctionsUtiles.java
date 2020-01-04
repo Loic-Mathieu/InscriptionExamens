@@ -28,12 +28,13 @@ public class FonctionsUtiles {
                 //Pour chaque élément de la liste d'examens
                 for (int i = 0; i < listeExams.size(); i++) {
                     //On check si on est dans le futur (comme Trunk)
-                    if (listeExams.get(i).date.compareTo(mtn) == 1) {
+                    if (listeExams.get(i).date.compareTo(mtn) > 0) {
                         //Si oui, on ajoute à la liste à retourner
                         listeRes.add(listeExams.get(i));
                     }
                 }
             }else if(s.equals("ANT")){
+                System.out.println("MTN:"+mtn);
                 //Pour chaque élément de la liste d'examens
                 for (int i = 0; i < listeExams.size(); i++) {
                     //On check si on est dans le futur (comme Trunk)
