@@ -1,6 +1,8 @@
 package be.hers.info.inscriptionexamens;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +57,24 @@ public class Prof_MainPage extends AppCompatActivity
                     public void onClick(View v)
                     {
                         Intent intent = new Intent(getApplicationContext(), Prof_AjouterExamen.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        // Déconnexion
+        Button changePage_deconnexionProf = findViewById(R.id.bChange_pDeconnexionProf);
+        changePage_deconnexionProf.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        /*SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.remove("MATRICULE");
+                        editor.commit();*/
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }
                 }
