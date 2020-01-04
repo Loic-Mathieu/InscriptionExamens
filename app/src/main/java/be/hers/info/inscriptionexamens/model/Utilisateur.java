@@ -83,4 +83,11 @@ public class Utilisateur {
     public void addToList(String refExam){
         this.listeExamens.add(refExam);
     }
+
+    // ADD TOSTRING
+    @Override
+    public String toString()
+    {
+        return nom.toUpperCase() + " " + prenom;
+    }
 }
