@@ -14,13 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
+import be.hers.info.inscriptionexamens.custom.ExamComparator;
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.database.FonctionsUtiles;
+import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
@@ -44,6 +47,8 @@ public class Etud_InscriptionExamen extends AppCompatActivity
         final Set<String> annees = preferences.getStringSet("ANNEES", new HashSet<>(Arrays.asList("1", "2", "3")) );
 
         List<Examen> examens = db.getExamenNonInscrit(user.getId(), annees);
+        ExamComparator comparator = new ExamComparator(db);
+        examens.sort(comparator);
         customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "POST"));
     }
 

@@ -62,6 +62,6 @@ public class Cours {
     }
 
     public String toString(){
-        return (getNom() + " - Bloc " + getAnnee() + " - Q" + getQuadrimestre());
+        return ("Bloc " + annee + ", Q" + quadrimestre + " - " + nom);
     }
 }
