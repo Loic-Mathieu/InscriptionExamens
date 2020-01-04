@@ -232,8 +232,9 @@ public class ExamDB extends SQLiteOpenHelper {
                 listeExam.add(separation[i]);
             }
 
-            System.out.println("ID USER ICI : "+utilisateur.getId());
             utilisateur.setId(cursor.getInt(0));
+            System.out.println("ID USER ICI : "+utilisateur.getId());
+
             return utilisateur;
 
         }catch(Exception e){
@@ -631,12 +632,15 @@ public class ExamDB extends SQLiteOpenHelper {
 
         try
         {
-            // Inner join
+            // Sub querry
             String rawQuery = "SELECT " + EXAMEN_ID + ", " + EXAMEN_COURS + ", " + EXAMEN_TYPE + ", "
-                        + EXAMEN_DESCRIPTION + ", " + EXAMEN_DATE + ", " +EXAMEN_DUREE
-                    + " FROM " + TABLE_EXAMEN + " INNER JOIN " + TABLE_UTIL_EXAM
-                    + " ON " + EXAMEN_ID + " = " + UTIL_EXAM_REFEXAMEN
-                    + " WHERE " + UTIL_EXAM_REFUTILISATEUR + " =? ";
+                    + EXAMEN_DESCRIPTION + ", " + EXAMEN_DATE + ", " +EXAMEN_DUREE
+                    + " FROM " + TABLE_EXAMEN
+                    + " WHERE " + EXAMEN_ID + " IN ("
+                        + " SELECT "+ UTIL_EXAM_REFEXAMEN
+                        + " FROM "+ TABLE_UTIL_EXAM
+                        + " WHERE " + UTIL_EXAM_REFUTILISATEUR + " =?"
+                    +" ) ";
 
             Cursor cursor = db.rawQuery(rawQuery, new String[]{String.valueOf(refUtilisateur)});
 
@@ -665,8 +669,6 @@ public class ExamDB extends SQLiteOpenHelper {
                     } while (cursor.moveToNext());
                 }
             }
-
-            return listeExamens;
         }
         catch (Exception e){e.printStackTrace();}
         finally
@@ -674,9 +676,66 @@ public class ExamDB extends SQLiteOpenHelper {
             db.close();
         }
 
+        return listeExamens;
+    }
 
+    /**
+     * Liste les examens aux quels un utilisateur n'est PAS inscrit
+     * @param refUtilisateur id de l'utilisateur
+     * @return examens aux quels il est possible de s'inscrire
+     */
+    public List<Examen> getExamenNonInscrit(int refUtilisateur)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        LinkedList<Examen> listeExamens = new LinkedList<Examen>();
 
-        return null;
+        try
+        {
+            // Inner join
+            String rawQuery = "SELECT " + EXAMEN_ID + ", " + EXAMEN_COURS + ", " + EXAMEN_TYPE + ", "
+                    + EXAMEN_DESCRIPTION + ", " + EXAMEN_DATE + ", " +EXAMEN_DUREE
+                    + " FROM " + TABLE_EXAMEN
+                    + " WHERE " + EXAMEN_ID + " NOT IN ("
+                        + " SELECT "+ UTIL_EXAM_REFEXAMEN
+                        + " FROM "+ TABLE_UTIL_EXAM
+                        + " WHERE " + UTIL_EXAM_REFUTILISATEUR + " =?"
+                    +" ) ";
+
+            Cursor cursor = db.rawQuery(rawQuery, new String[]{String.valueOf(refUtilisateur)});
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                if(cursor.moveToFirst())
+                {
+                    // Add all examens
+                    do {
+                        Examen exam = new Examen
+                                (
+                                        cursor.getInt(1),
+                                        TypeExamen.valueOf(cursor.getString(2)),
+                                        cursor.getString(3),
+                                        cursor.getInt(5)
+                                );
+
+                        String str_d = cursor.getString(4);
+                        LocalDateTime date = LocalDateTime.parse(str_d, formatter);
+                        // LocalDateTime date = LocalDateTime.parse(str_d);
+                        exam.date = date;
+
+                        exam.setId(cursor.getInt(0));
+                        listeExamens.add(exam);
+                    } while (cursor.moveToNext());
+                }
+            }
+        }
+        catch (Exception e){e.printStackTrace();}
+        finally
+        {
+            db.close();
+        }
+
+        return listeExamens;
     }
 
 
