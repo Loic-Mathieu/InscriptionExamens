@@ -32,6 +32,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     *
+     * @return
+     */
+    private boolean checkSharedPreferences()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+        return sharedPreferences.contains("ANNEES");
+    }
+
+    /**
      * Initialise la DB si besoin
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -98,7 +108,12 @@ public class MainActivity extends AppCompatActivity
                         if(db.verifierEstProf(matricule.getText().toString()))
                             intent = new Intent(getApplicationContext(), Prof_MainPage.class);
                         else
-                            intent = new Intent(getApplicationContext(), Etud_MainPage.class);
+                        {
+                            if(checkSharedPreferences())
+                                intent = new Intent(getApplicationContext(), Etud_MainPage.class);
+                            else
+                                intent = new Intent(getApplicationContext(), Etud_ChoixAnnee.class);
+                        }
 
                         // Mettre le matricule dans les préférences
                         SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
