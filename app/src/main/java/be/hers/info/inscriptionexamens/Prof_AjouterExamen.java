@@ -1,6 +1,7 @@
 package be.hers.info.inscriptionexamens;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -167,6 +168,8 @@ public class Prof_AjouterExamen extends AppCompatActivity
                     public void onClick(View v)
                     {
                         creerExamen();
+                        Intent intent = new Intent(getApplicationContext(), Prof_MainPage.class);
+                        startActivity(intent);
                     }
                 }
         );
