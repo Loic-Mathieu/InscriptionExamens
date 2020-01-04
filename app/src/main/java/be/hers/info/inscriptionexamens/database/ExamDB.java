@@ -994,9 +994,6 @@ public class ExamDB extends SQLiteOpenHelper {
 
         try{
             ContentValues values = new ContentValues();
-            StringBuilder str = new StringBuilder();
-
-            String resListe = str.toString();
 
             values.put(NOTIF_REFEXAMEN, refExam);
 
@@ -1037,19 +1034,18 @@ public class ExamDB extends SQLiteOpenHelper {
                 {
                     // Add all examensModifiés
                     do {
-                        listeRefExams.add(getExamenByID(cursor.getInt(1)));
+                        listeRefExams.add(getExamenByID(cursor.getInt(0)));
                     }
                     while (cursor.moveToNext());
                 }
             }
 
-            return listeRefExams;
         }catch(Exception e){
             e.printStackTrace();
         }finally {
             db.close();
         }
-        return null;
+        return listeRefExams;
     }
 
 
