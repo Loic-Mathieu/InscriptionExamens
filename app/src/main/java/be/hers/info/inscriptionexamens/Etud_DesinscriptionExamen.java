@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.database.ExamDB;
@@ -26,16 +27,15 @@ public class Etud_DesinscriptionExamen extends AppCompatActivity
     private final ExamDB db = new ExamDB(this);
 
     /**
-     * Initialise la listView d'examens
+     * Initialise la listView
+     * @param refUtilisateur id de l'utilisateur connecté
      */
-    private void initList(ArrayList<Integer> listeRefExam)
+    private void initList(int refUtilisateur)
     {
-        //Recup la liste des examens
-        ArrayList<Examen> listeExam = new ArrayList<Examen>();
-        for (int id_exam : listeRefExam)
-        {
-            customList.add(db.getExamenByID(id_exam));
-        }
+        // Liste d'examens inscits
+        List<Examen> examens = db.getExamenByInscription(refUtilisateur);
+
+        customList.addAll(examens);
     }
 
     @Override
@@ -56,13 +56,8 @@ public class Etud_DesinscriptionExamen extends AppCompatActivity
         // Recup l'utilisateur
         Utilisateur user = db.getUtilisateur(matricule);
 
-        // Recup la liste des ref examens
-        ArrayList<Integer> listeRefExam = new ArrayList<Integer>();
-        listeRefExam = db.getAllRefExamInscritByUser(user.getId());
-
-
         // init liste
-        initList(listeRefExam);
+        initList(user.getId());
 
         Button bDesinscription = findViewById(R.id.bDesinscription);
         bDesinscription.setOnClickListener
