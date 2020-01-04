@@ -48,8 +48,7 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
 
         // Nom du cours
         TextView nomCours = view.findViewById(R.id.oNomCours);
-        nomCours.setText("" + db.getCours(examen.refCours).toString());
-
+        nomCours.setText("Année : " + db.getCours(examen.refCours).getAnnee() + "\n" +db.getCours(examen.refCours).toString());
 
         // Type d'examen
         TextView oQuadri = view.findViewById(R.id.oTypeExam);
@@ -60,13 +59,13 @@ public class AdapterListView_Examen extends ArrayAdapter<Examen>
         // Date
         TextView oDate = view.findViewById(R.id.oDate);
         if(examen.date != null)
-            oDate.setText(""+examen.date.toString());
+            oDate.setText(""+examen.date.getDayOfMonth()+"-"+examen.date.getMonth()+"-"+examen.date.getYear());
         else
             oDate.setText("Aucune date déterminée");
 
         // Duree
         TextView oDuree = view.findViewById(R.id.oDuree);
-        oDuree.setText("" + examen.dureeMinute);
+        oDuree.setText("" + examen.dureeMinute + " minutes");
 
 
         CheckBox checkBox = view.findViewById(R.id.iChoix);

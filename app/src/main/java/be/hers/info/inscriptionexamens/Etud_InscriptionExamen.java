@@ -39,7 +39,7 @@ public class Etud_InscriptionExamen extends AppCompatActivity
         Utilisateur user = db.getUtilisateur(matricule);
 
         List<Examen> examens = db.getExamenNonInscrit(user.getId());
-        customList.addAll(examens);
+        customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "POST"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
