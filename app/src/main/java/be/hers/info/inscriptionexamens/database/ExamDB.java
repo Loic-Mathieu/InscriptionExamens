@@ -91,6 +91,18 @@ public class ExamDB extends SQLiteOpenHelper {
             + "CONSTRAINT unqInscr UNIQUE ("+UTIL_EXAM_REFUTILISATEUR+", "+UTIL_EXAM_REFEXAMEN+")"
             + " );";
 
+    // Table AnneeEtud----------------------------------------------------------------------------
+    private static final String TABLE_ANNEE_ETUD = "annee_etud";
+    private static final String ANNEE_ETUD_REFETUDIANT = "refEtudiant";
+    private static final String ANNEE_ETUD_ANNEE = "année";
+
+    private static final String CREATE_TABLE_ANNEE_ETUD = "create table " + TABLE_ANNEE_ETUD + " ("
+            + "_id integer primary key autoincrement, "
+            + ANNEE_ETUD_REFETUDIANT + " integer not null, "
+            + ANNEE_ETUD_ANNEE + " integer not null, "
+            + "CONSTRAINT unqInscr UNIQUE ("+ANNEE_ETUD_REFETUDIANT+", "+ANNEE_ETUD_ANNEE+")"
+            + " );";
+
     //Table Cours----------------------------------------------------------------------------
     private static final String TABLE_COURS = "cours";
     private static final String COURS_ID = "_id";
@@ -116,6 +128,7 @@ public class ExamDB extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_EXAMEN);
             db.execSQL(CREATE_TABLE_COURS);
             db.execSQL(CREATE_TABLE_UTILISATEUR_EXAM);
+            db.execSQL(CREATE_TABLE_ANNEE_ETUD);
 
         }
         catch(SQLException e) { e.printStackTrace(); }
@@ -739,7 +752,7 @@ public class ExamDB extends SQLiteOpenHelper {
     }
 
 
-    public List<Examen> getAllExamenByListeAnnee(List<Integer> listeID)
+    public List<Examen> getAllExamenByListeAnnee(List<Integer> listeAnnee)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Examen> listeExamens;
@@ -753,11 +766,11 @@ public class ExamDB extends SQLiteOpenHelper {
                 //On récupère le cours
                 Cours c = getCours(listeExamens.get(i).refCours);
                 //Pour chaque élément de la liste d'ID
-                for(int j = 0; j < listeID.size(); j++){
+                for(int j = 0; j < listeAnnee.size(); j++){
                     //On check s'il est égal à l'année du cours
-                    if(c.getAnnee() == listeID.get(j)){
+                    if(c.getAnnee() == listeAnnee.get(j)){
                         //Si oui, on ajoute l'examen à la liste finale
-                        listeRes.add(getExamenByID(listeID.get(i)));
+                        listeRes.add(getExamenByID(listeAnnee.get(i)));
                     }
                 }
             }
