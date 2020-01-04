@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import be.hers.info.inscriptionexamens.database.ExamDB;
+import be.hers.info.inscriptionexamens.database.FonctionsUtiles;
 import be.hers.info.inscriptionexamens.model.Cours;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.TypeExamen;
@@ -163,6 +164,7 @@ public class Prof_ModifExamen extends AppCompatActivity
         String output = "Examen Modifié !";
 
         Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
+        db.addExamModifie(examen.getId());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

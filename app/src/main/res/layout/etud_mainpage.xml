@@ -10,30 +10,23 @@
         android:gravity="center"
         android:text="@string/oMenu" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:orientation="horizontal">
 
-        <Button
+    <Button
             android:id="@+id/bChange_pInscription"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/inscription" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:orientation="horizontal">
-
-        <Button
+    <Button
             android:id="@+id/bChange_pDesinscription"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/desinscription" />
-    </LinearLayout>
+
+    <ListView
+        android:id="@+id/customListExamsModifies"
+        android:layout_width="match_parent"
+        android:layout_height="519dp"
+        />
 
 </LinearLayout>

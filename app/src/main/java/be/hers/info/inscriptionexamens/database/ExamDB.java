@@ -103,6 +103,16 @@ public class ExamDB extends SQLiteOpenHelper {
             + "CONSTRAINT unqInscr UNIQUE ("+ANNEE_ETUD_REFETUDIANT+", "+ANNEE_ETUD_ANNEE+")"
             + " );";
 
+    // Table Notifications----------------------------------------------------------------------------
+    private static final String TABLE_NOTIFICATION = "notification";
+    private static final String NOTIF_REFEXAMEN = "refEXAMEN";
+
+    private static final String CREATE_TABLE_NOTIFICATION = "create table " + TABLE_NOTIFICATION + " ("
+            + "_id integer primary key autoincrement, "
+            + NOTIF_REFEXAMEN + " integer not null, "
+            + "CONSTRAINT unqInscr UNIQUE ("+NOTIF_REFEXAMEN+")"
+            + " );";
+
     //Table Cours----------------------------------------------------------------------------
     private static final String TABLE_COURS = "cours";
     private static final String COURS_ID = "_id";
@@ -129,7 +139,7 @@ public class ExamDB extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_COURS);
             db.execSQL(CREATE_TABLE_UTILISATEUR_EXAM);
             db.execSQL(CREATE_TABLE_ANNEE_ETUD);
-
+            db.execSQL(CREATE_TABLE_NOTIFICATION);
         }
         catch(SQLException e) { e.printStackTrace(); }
 
@@ -974,6 +984,71 @@ public class ExamDB extends SQLiteOpenHelper {
         }
         return null;
     }
+
+    //Ajouter un utilisateur-----------------------------------------------------------------------
+    public void addExamModifie(int refExam) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+            ContentValues values = new ContentValues();
+            StringBuilder str = new StringBuilder();
+
+            String resListe = str.toString();
+
+            values.put(NOTIF_REFEXAMEN, refExam);
+
+            db.insert(TABLE_NOTIFICATION, null, values);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            db.close();
+        }
+    }
+
+    /**
+     * récupère une liste d'élèves inscrits à un examen
+     * @return listeEleves
+     */
+    public ArrayList<Examen> getExamModifies() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Examen> listeRefExams = new ArrayList<>();
+
+        try{
+            Cursor cursor = db.query(
+                    TABLE_NOTIFICATION,
+                    new String[]{
+                            NOTIF_REFEXAMEN
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            // Si le curseur existe
+            if (cursor != null)
+            {
+                if(cursor.moveToFirst())
+                {
+                    // Add all examensModifiés
+                    do {
+                        listeRefExams.add(getExamenByID(cursor.getInt(1)));
+                    }
+                    while (cursor.moveToNext());
+                }
+            }
+
+            return listeRefExams;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
+        return null;
+    }
+
 
     //********************************************************************************************
     //**************************** METHODES COURS ******************************************
