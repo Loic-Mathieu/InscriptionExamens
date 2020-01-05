@@ -24,4 +24,5 @@
     <string name="oListeExamPassees">Lister les examens passés</string>
 
     <string name="foo">PLACE_HOLDER</string>
+    <string name="notifications">Notifications</string>
 </resources>

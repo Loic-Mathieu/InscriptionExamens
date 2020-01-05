@@ -16,25 +16,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-import be.hers.info.inscriptionexamens.custom.AdapterListVew_ExamProf;
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
 import be.hers.info.inscriptionexamens.database.ExamDB;
-import be.hers.info.inscriptionexamens.database.FonctionsUtiles;
 import be.hers.info.inscriptionexamens.model.Examen;
 import be.hers.info.inscriptionexamens.model.Utilisateur;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class Etud_MainPage extends AppCompatActivity
 {
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    private AdapterListView_Examen customList;
+    private ExamDB db = new ExamDB(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.etud_mainpage);
-        ExamDB db = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            db = new ExamDB(this);
-        }
 
         // Toast
         Toast.makeText(Etud_MainPage.this, ("Page Etud !"), Toast.LENGTH_SHORT).show();
@@ -85,13 +82,36 @@ public class Etud_MainPage extends AppCompatActivity
                 }
         );
 
+        // Get user
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("USER", Activity.MODE_PRIVATE);
         final String matricule = preferences.getString("MATRICULE", "VIDE");
         Utilisateur user = db.getUtilisateur(matricule);
 
-        AdapterListView_Examen customList = new AdapterListView_Examen(this, new ArrayList<Examen>());
+        // Init notifications
+        customList = new AdapterListView_Examen(this, new ArrayList<Examen>());
         ListView listView = findViewById(R.id.customListExamsModifies);
         customList.addAll(db.getExamModifies(user.getId()));
+
+        Button bDesinscription = findViewById(R.id.bDesinscription);
+
+        // Si il n'y a pas de notifs
+        if(customList.isEmpty())
+            bDesinscription.setVisibility(View.GONE); // Gone ne prend pas de place
+
+        bDesinscription.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ArrayList<Integer> list = customList.getSelectedIds();
+                for (int id_exam : list)
+                {
+                    db.desinscrireUtilisateurAExamen(matricule, id_exam);
+                }
+                Intent intent = new Intent(getApplicationContext(), Etud_MainPage.class);
+                startActivity(intent);
+            }
+        });
 
         listView.setAdapter(customList);
     }

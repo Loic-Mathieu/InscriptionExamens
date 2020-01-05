@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListView_Examen;
+import be.hers.info.inscriptionexamens.custom.ExamComparator;
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.database.FonctionsUtiles;
 import be.hers.info.inscriptionexamens.model.Examen;
@@ -40,6 +41,8 @@ public class Etud_DesinscriptionExamen extends AppCompatActivity
 
         // Liste d'examens inscits
         List<Examen> examens = db.getExamenByInscription(user.getId());
+        ExamComparator comparator = new ExamComparator(db);
+        examens.sort(comparator);
         customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, "POST"));
     }
 

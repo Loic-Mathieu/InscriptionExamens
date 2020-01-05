@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.hers.info.inscriptionexamens.custom.AdapterListVew_ExamProf;
+import be.hers.info.inscriptionexamens.custom.ExamComparator;
 import be.hers.info.inscriptionexamens.database.ExamDB;
 import be.hers.info.inscriptionexamens.database.FonctionsUtiles;
 import be.hers.info.inscriptionexamens.model.Examen;
@@ -50,6 +51,8 @@ public class Prof_ListeExamens extends AppCompatActivity
         Utilisateur prof = db.getUtilisateur(matricule);
 
         List<Examen> examens = db.getExamenByInscription(prof.getId());
+        ExamComparator comparator = new ExamComparator(db);
+        examens.sort(comparator);
         customList.addAll(FonctionsUtiles.getAllExamAnterieurs(examens, getExtra()));
     }
 

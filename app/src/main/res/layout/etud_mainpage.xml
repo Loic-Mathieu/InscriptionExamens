@@ -29,10 +29,35 @@
             android:layout_height="wrap_content"
             android:text="Deconnexion" />
 
-    <ListView
-        android:id="@+id/customListExamsModifies"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="519dp"
-        />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/notifications" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/customListExamsModifies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+            </ListView>
+
+            <Button
+                android:id="@+id/bDesinscription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bDesinscription" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
